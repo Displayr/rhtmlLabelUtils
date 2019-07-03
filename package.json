@@ -1,0 +1,20 @@
+{
+  "name": "rhtml-label-utils",
+  "private": "true",
+  "version": "1.0.0",
+  "description": "label utilities and shared label components for rhtml packages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Displayr/rhtmlLabelUtils.git"
+  },
+  "author": "Kyle Zeeuwen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Displayr/rhtmlLabelUtils/issues"
+  },
+  "homepage": "https://github.com/Displayr/rhtmlLabelUtils#readme"
+}
