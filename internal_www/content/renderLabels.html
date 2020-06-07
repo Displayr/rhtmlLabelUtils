@@ -4,7 +4,7 @@
 </head>
 <body>
   <h2>To run a test in dev tools execute something like this:</h2>
-  <pre>renderLabel({text: "Label 1","fontFamily":"Arial","fontWeight":"lighter","offset":{"x":0,"y":50}})</pre>
+  <pre>renderLabel({text: "Label 1","fontSize":"20", "fontFamily":"Arial","fontWeight":"lighter","offset":{"x":0,"y":50}})</pre>
   <pre>resetSvgContents()</pre>
   <svg class="canvas" id="svg-canvas" width="4000" height="4000"></svg>
   <script src="/external/d3.js"></script>
@@ -27,7 +27,7 @@
         .attr('x', origin.x + input.offset.x)
         .attr('y', origin.y + input.offset.y)
         .attr('font-family', input.fontFamily)
-        .attr('font-size', `${input.fontSize}px`)
+        .attr('font-size', (`${input.fontSize}`.indexOf('px') === -1) ? `${input.fontSize}px` : `${input.fontSize}`)
         .attr('font-weight', input.fontWeight)
         .attr('dominant-baseline', 'text-before-edge')
         .attr('fill', 'black')
