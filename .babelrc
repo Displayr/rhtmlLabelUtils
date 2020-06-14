@@ -1,0 +1,13 @@
+{
+  "presets": [
+    "@babel/env"
+  ],
+  "ignore": [
+    "assets",
+    "build",
+    "dist",
+    "internal_www",
+    "node_modules",
+    "test"
+  ]
+}
