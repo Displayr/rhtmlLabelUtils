@@ -2,9 +2,9 @@
 
 # To build
 
-Currently no build steps. The `package.json` file specifies `src/index.js` as the entry point and all modules are listed there.
+```npm run dist```
 
-There is no packaging for use in browser, it is assumed that the callee will take care of this.
+This must be run to generate `dist/index.js`, which is the entry point defined in `package.json`
 
 # To test
 
