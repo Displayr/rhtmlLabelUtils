@@ -1,4 +1,4 @@
-import getHorizontalLabelDimensionsUsingSvgApproximation from '../../src/lib/getHorizontalLabelDimensionsUsingSvgApproximation'
+const getHorizontalLabelDimensionsUsingSvgApproximation = require('../../src/lib/getHorizontalLabelDimensionsUsingSvgApproximation')
 
 document.addEventListener('DOMContentLoaded', () => {
   window.labelUtils = {

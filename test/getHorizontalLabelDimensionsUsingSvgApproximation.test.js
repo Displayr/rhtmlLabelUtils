@@ -1,6 +1,9 @@
 /* global jest */
 /* global expect */
 
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
 const puppeteer = require('puppeteer')
 const { configureToMatchImageSnapshot } = require('jest-image-snapshot')
 const {

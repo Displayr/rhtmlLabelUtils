@@ -10,12 +10,12 @@ This must be run to generate `dist/index.js`, which is the entry point defined i
 
 ### Two commands must be run in seperate terminals:
 
-1. gulp serve
+1. ```npm run serve```
 1. jest test/
 
-### To update the snaphots
+### To update the snapshots
 
-1. gulp serve
+1. ```npm run serve```
 1. jest -u test/
 
 Testing notes:
