@@ -26,19 +26,22 @@ const inputs = [
   { textName: 'all_alphanumeric', text: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890' },
   { textName: 'specialCharacters', text: '!@#$%^&*()-_+=[{]}\\|?/.>,<~`"\'' },
 ]
+const orientations = ['horizontal']
 
 const testCases = []
-inputs.forEach(({textName, text }) => {
-  fontFamilies.forEach(fontFamily => {
-    const newTestCase = { text, name: stripSpaces(`${textName}-${fontFamily}`).toLowerCase(), combinations: [] }
-    fontSizes.forEach(fontSize => {
-      fontWeights.forEach(fontWeight => {
-        const settings = { fontSize, fontFamily, fontWeight, rotation: '0' }
-        const comboName = getNameFromParts({ ...settings, textName })
-        newTestCase.combinations.push({ name: comboName, ...settings })
+orientations.forEach(orientation => {
+  inputs.forEach(({textName, text}) => {
+    fontFamilies.forEach(fontFamily => {
+      const newTestCase = {text, name: stripSpaces(`${textName}-${fontFamily}`).toLowerCase(), combinations: []}
+      fontSizes.forEach(fontSize => {
+        fontWeights.forEach(fontWeight => {
+          const settings = {fontSize, fontFamily, fontWeight, rotation: '0'}
+          const comboName = getNameFromParts({...settings, textName})
+          newTestCase.combinations.push({name: comboName, ...settings})
+        })
       })
+      testCases.push(newTestCase)
     })
-    testCases.push(newTestCase)
   })
 })
 

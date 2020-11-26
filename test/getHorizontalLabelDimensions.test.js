@@ -14,10 +14,10 @@ const {
   canvasSelector,
   testUrl,
   snapshotExtraPadding
-} = require('./getHorizontalLabelDimensionsUsingSvgApproximation.settings')
+} = require('./getLabelDimensions.settings')
 
-const testCases = require('./getHorizontalLabelDimensionsUsingSvgApproximation.testCases')
-const tests = testCases.map(testConfig => [testConfig.name, testConfig]) // map to expected jest test.each format
+const testCases = require('./getLabelDimensions.testCases')
+const tests = testCases.map(testConfig => [`horizontal-${testConfig.name}`, testConfig]) // map to expected jest test.each format
 
 jest.setTimeout(timeout)
 const toMatchImageSnapshot = configureToMatchImageSnapshot(imageSnapshotSettings)
@@ -25,7 +25,7 @@ expect.extend({ toMatchImageSnapshot })
 
 const ECHO_COMPUTED_DIMENSIONS = false // NB useful for seeding text expectations
 
-describe('getHorizontalLabelDimensionsUsingSvgApproximation output and snapshot verification:', () => {
+describe('getHorizontalLabelDimensions output and snapshot verification:', () => {
   let browser
   let page
   let svgBoundingBox
@@ -53,7 +53,7 @@ describe('getHorizontalLabelDimensionsUsingSvgApproximation output and snapshot 
     let currentOffset = originOffset
     let maxWidth = 0
     await asyncForEach(combinations, async (combination, index) => {
-      const output = await executeGetLabelDimensionsUsingSvgApproximationInBrowser({
+      const output = await executeGetLabelDimensionsInBrowser({
         page,
         input: {
           ...combination,
@@ -81,9 +81,9 @@ describe('getHorizontalLabelDimensionsUsingSvgApproximation output and snapshot 
   })
 })
 
-const executeGetLabelDimensionsUsingSvgApproximationInBrowser = async ({ page, input }) => {
+const executeGetLabelDimensionsInBrowser = async ({ page, input }) => {
   function thisIsExecutedRemotely (input) {
-    return window.renderLabel(input) // renderLabel is defined in renderLabels.html
+    return window.renderHorizontalLabel(input) // renderHorizontalLabel is defined in renderLabels.html
   }
 
   return page.evaluate(thisIsExecutedRemotely, input)

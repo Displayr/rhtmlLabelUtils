@@ -1,3 +1,6 @@
+const { getHorizontalLabelDimensions, getVerticalLabelDimensions } = require('./lib/getLabelDimensions')
+
 module.exports = {
-  getHorizontalLabelDimensionsUsingSvgApproximation: require('./lib/getHorizontalLabelDimensionsUsingSvgApproximation')
+  getHorizontalLabelDimensions,
+  getVerticalLabelDimensions,
 }

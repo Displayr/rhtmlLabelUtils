@@ -4,7 +4,7 @@
 </head>
 <body>
   <h2>To run a test in dev tools execute something like this:</h2>
-  <pre>renderLabel({text: "Label 1","fontSize":"20", "fontFamily":"Arial","fontWeight":"lighter","offset":{"x":0,"y":50}})</pre>
+  <pre>renderHorizontalLabel({text: "Label 1","fontSize":"20", "fontFamily":"Arial","fontWeight":"lighter","offset":{"x":0,"y":50}})</pre>
   <pre>resetSvgContents()</pre>
   <svg class="canvas" id="svg-canvas" width="4000" height="4000"></svg>
   <script src="/external/d3.js"></script>
@@ -16,10 +16,41 @@
       d3.select('#svg-canvas').selectAll("*").remove();
     }
 
-    window.renderLabel = (input) => {
-      // console.log(`called renderLabel with: ${JSON.stringify(input)}`)
+    window.renderHorizontalLabel = (input) => {
+      // console.log(`called renderHorizontalLabel with: ${JSON.stringify(input)}`)
       const parentContainer = d3.select('#svg-canvas')
-      const output = window.labelUtils.getHorizontalLabelDimensionsUsingSvgApproximation({ parentContainer, ...input })
+      const output = window.labelUtils.getHorizontalLabelDimensions({ parentContainer, ...input })
+
+      parentContainer
+        .append('text')
+        .attr('class', `test-label`)
+        .attr('x', origin.x + input.offset.x)
+        .attr('y', origin.y + input.offset.y)
+        .attr('font-family', input.fontFamily)
+        .attr('font-size', (`${input.fontSize}`.indexOf('px') === -1) ? `${input.fontSize}px` : `${input.fontSize}`)
+        .attr('font-weight', input.fontWeight)
+        .attr('dominant-baseline', 'text-before-edge')
+        .attr('fill', 'black')
+        .text(input.text)
+
+      parentContainer
+        .append('rect')
+        .attr('class', `test-box`)
+        .attr('x', origin.x + input.offset.x)
+        .attr('y', origin.y + input.offset.y)
+        .attr('width', output.width)
+        .attr('height', output.height)
+        .attr('fill', 'none')
+        .attr('stroke', 'red')
+        .attr('stroke-width', 0.5)
+
+      return output
+    }
+
+    window.renderVerticalLabel = (input) => {
+      // console.log(`called renderVerticalLabel with: ${JSON.stringify(input)}`)
+      const parentContainer = d3.select('#svg-canvas')
+      const output = window.labelUtils.getVerticalLabelDimensions({ parentContainer, ...input })
 
       parentContainer
         .append('text')

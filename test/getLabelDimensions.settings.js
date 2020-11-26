@@ -12,7 +12,7 @@ const puppeteerSettings = {
 module.exports = {
   puppeteerSettings,
   imageSnapshotSettings: {
-    customSnapshotsDir: path.join(__dirname, 'snapshots/getHorizontalLabelDimensionsUsingSvgApproximation', (puppeteerSettings.headless) ? 'headless' : 'not_headless'),
+    customSnapshotsDir: path.join(__dirname, 'snapshots/getLabelDimensions', (puppeteerSettings.headless) ? 'headless' : 'not_headless'),
     customDiffConfig: {
       threshold: 0.0001
     },

@@ -1,7 +1,7 @@
-const getHorizontalLabelDimensionsUsingSvgApproximation = require('../../src/lib/getHorizontalLabelDimensionsUsingSvgApproximation')
+const { getHorizontalLabelDimensions, getVerticalLabelDimensions }  = require('../../src')
 
 document.addEventListener('DOMContentLoaded', () => {
   window.labelUtils = {
-    getHorizontalLabelDimensionsUsingSvgApproximation
+    getHorizontalLabelDimensions, getVerticalLabelDimensions
   }
 }, false)
