@@ -1,8 +1,7 @@
 let uniqueId = 0
 function getUniqueId () { return uniqueId++ }
 
-const DEBUG_OUTPUT_DISCREPANCY = false
-const DEBUG_OUTPUT_NON_ZERO_OFFSETS = false
+const DEBUG = true
 
 // NB parentContainer must be a d3 selection
 function getHorizontalLabelDimensions ({ parentContainer, text, fontSize, fontFamily, fontWeight }) {
@@ -38,24 +37,28 @@ function getLabelDimensions ({ parentContainer, text, fontSize: fontSizeStringOr
     .style('dominant-baseline', 'text-before-edge')
     .text(text)
 
-  const { x, y, width, height } = textElement.node().getBBox()
+  // const { x, y, width, height } = textElement.node().getBBox()
+  const { x, y, width, height } = textElement.node().getBoundingClientRect()
 
-  const computedWidth = textElement.node().getComputedTextLength()
+
+  if (DEBUG) {
+    const computedWidth = textElement.node().getComputedTextLength()
+
+    if (DEBUG && Math.abs(computedWidth - width) > 1) {
+      console.warn(`getLabelDimensions('${text}'): discrepancy between getBbox().width and getComputedTextLength (bb:${width}, comp:${computedWidth}`)
+    }
+
+    if (DEBUG && x !== 0) {
+      console.warn(`getLabelDimensions('${text}'): got non zero x offset: ${x}`)
+    }
+
+    if (DEBUG && y !== 0) {
+      console.warn(`getLabelDimensions('${text}'): got non zero y offset: ${y}`)
+    }
+  }
+
   parentContainer.select(`#${uniqueId}`).remove()
-
-  if (DEBUG_OUTPUT_DISCREPANCY && Math.abs(computedWidth - width) > 1) {
-    console.warn(`getHorizontalLabelDimensions('${text}'): discrepancy between getBbox().width and getComputedTextLength (bb:${width}, comp:${computedWidth}`)
-  }
-
-  if (DEBUG_OUTPUT_NON_ZERO_OFFSETS && x !== 0) {
-    console.warn(`getHorizontalLabelDimensions('${text}'): got non zero x offset: ${x}`)
-  }
-
-  if (DEBUG_OUTPUT_NON_ZERO_OFFSETS && y !== 0) {
-    console.warn(`getHorizontalLabelDimensions('${text}'): got non zero y offset: ${y}`)
-  }
-
-  return { width, height, computedWidth }
+  return { width, height }
 }
 
 module.exports = { getHorizontalLabelDimensions, getVerticalLabelDimensions }

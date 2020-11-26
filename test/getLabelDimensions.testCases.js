@@ -1,20 +1,6 @@
 const _ = require('lodash')
 
-const addFontAttributesIfMissing = (testCase) => {
-  if (!testCase.input.text) { testCase.input.text= 'label' }
-  if (!testCase.input.fontSize) { testCase.input.fontSize = '10' }
-  if (!testCase.input.fontFamily) { testCase.input.fontFamily = 'Arial' }
-  if (!testCase.input.fontWeight) { testCase.input.fontWeight = 'normal' }
-  if (!testCase.input.rotation) { testCase.input.rotation = '0' }
-  return testCase
-}
-
-const addNameIfMissing = (testCase) => {
-  if (!testCase.name) { testCase.name = getNameFromParts(testCase.input) }
-  return testCase
-}
-
-const getNameFromParts = ({ fontSize, fontFamily, fontWeight, rotation, text, textName }) => `${textName || text}-${fontFamily}-${fontSize}-${fontWeight}-${rotation}`
+const getNameFromParts = ({ fontSize, fontFamily, fontWeight, text, textName }) => `${textName || text}-${fontFamily}-${fontSize}-${fontWeight}`
 const stripSpaces = (input) => input.replace(/ /g, '')
 
 const fontSizes = [15,30,45,60]
@@ -35,7 +21,7 @@ orientations.forEach(orientation => {
       const newTestCase = {text, name: stripSpaces(`${textName}-${fontFamily}`).toLowerCase(), combinations: []}
       fontSizes.forEach(fontSize => {
         fontWeights.forEach(fontWeight => {
-          const settings = {fontSize, fontFamily, fontWeight, rotation: '0'}
+          const settings = {fontSize, fontFamily, fontWeight}
           const comboName = getNameFromParts({...settings, textName})
           newTestCase.combinations.push({name: comboName, ...settings})
         })
@@ -46,7 +32,5 @@ orientations.forEach(orientation => {
 })
 
 module.exports = testCases
-  // .map(addFontAttributesIfMissing)
-  // .map(addNameIfMissing)
 
 

@@ -5,6 +5,7 @@
 <body>
   <h2>To run a test in dev tools execute something like this:</h2>
   <pre>renderHorizontalLabel({text: "Label 1","fontSize":"20", "fontFamily":"Arial","fontWeight":"lighter","offset":{"x":0,"y":50}})</pre>
+  <pre>renderVerticalLabel({text: "Label 1","fontSize":"20", "fontFamily":"Arial","fontWeight":"lighter","offset":{"x":50,"y":50}})</pre>
   <pre>resetSvgContents()</pre>
   <svg class="canvas" id="svg-canvas" width="4000" height="4000"></svg>
   <script src="/external/d3.js"></script>
@@ -52,16 +53,24 @@
       const parentContainer = d3.select('#svg-canvas')
       const output = window.labelUtils.getVerticalLabelDimensions({ parentContainer, ...input })
 
-      parentContainer
-        .append('text')
+      const container = parentContainer.append('g')
+        .attr('transform', `translate(${origin.x + input.offset.x},${origin.y + input.offset.y})`)
+
+      const textElement = container.append('text')
         .attr('class', `test-label`)
-        .attr('x', origin.x + input.offset.x)
-        .attr('y', origin.y + input.offset.y)
-        .attr('font-family', input.fontFamily)
-        .attr('font-size', (`${input.fontSize}`.indexOf('px') === -1) ? `${input.fontSize}px` : `${input.fontSize}`)
-        .attr('font-weight', input.fontWeight)
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('dy', 0)
         .attr('dominant-baseline', 'text-before-edge')
-        .attr('fill', 'black')
+        .attr('transform', `translate(${output.width},0),rotate(90)`)
+
+      textElement.append('tspan')
+        .attr('x', 0)
+        .attr('y', 0)
+        .style('font-size', input.fontSize)
+        .style('font-family', input.fontFamily)
+        .style('font-weight', input.fontWeight)
+        .style('dominant-baseline', 'text-before-edge')
         .text(input.text)
 
       parentContainer

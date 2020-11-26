@@ -17,7 +17,7 @@ const {
 } = require('./getLabelDimensions.settings')
 
 const testCases = require('./getLabelDimensions.testCases')
-const tests = testCases.map(testConfig => [`horizontal-${testConfig.name}`, testConfig]) // map to expected jest test.each format
+const tests = testCases.map(testConfig => [`vertical-${testConfig.name}`, testConfig]) // map to expected jest test.each format
 
 jest.setTimeout(timeout)
 const toMatchImageSnapshot = configureToMatchImageSnapshot(imageSnapshotSettings)
@@ -25,7 +25,7 @@ expect.extend({ toMatchImageSnapshot })
 
 const ECHO_COMPUTED_DIMENSIONS = false // NB useful for seeding text expectations
 
-describe('getHorizontalLabelDimensions output and snapshot verification:', () => {
+describe('getVerticalLabelDimensions output and snapshot verification:', () => {
   let browser
   let page
   let svgBoundingBox
@@ -51,20 +51,20 @@ describe('getHorizontalLabelDimensions output and snapshot verification:', () =>
     const combinations = testConfig.combinations
 
     let currentOffset = originOffset
-    let maxWidth = 0
+    let maxHeight = 0
     await asyncForEach(combinations, async (combination, index) => {
       const output = await executeGetLabelDimensionsInBrowser({
         page,
         input: {
           ...combination,
           text: testConfig.text,
-          offset: { x: 0, y: currentOffset }
+          offset: { x: currentOffset, y: 0 }
         }
       })
       if (testConfig.output) { expect(output).toEqual(testConfig.output) }
       else if (ECHO_COMPUTED_DIMENSIONS) { console.log(`test ${testConfig.name} missing excepted output. Actual output. `, JSON.stringify(output)) }
-      currentOffset += (output.height + 20)
-      maxWidth = Math.max(maxWidth, output.width)
+      currentOffset += (output.width + 20)
+      maxHeight = Math.max(maxHeight, output.height)
     })
 
     let svgCanvas = await page.$(canvasSelector)
@@ -72,8 +72,8 @@ describe('getHorizontalLabelDimensions output and snapshot verification:', () =>
       clip: {
         x: svgBoundingBox.x + originOffset - snapshotExtraPadding,
         y: svgBoundingBox.y + originOffset - snapshotExtraPadding,
-        width: Math.max(100, maxWidth + 2 * snapshotExtraPadding),
-        height: Math.max(20, currentOffset + 2 * snapshotExtraPadding)
+        width: Math.max(20, currentOffset + 2 * snapshotExtraPadding),
+        height: Math.max(100, maxHeight + 2 * snapshotExtraPadding),
       }
     })
 
@@ -83,8 +83,10 @@ describe('getHorizontalLabelDimensions output and snapshot verification:', () =>
 
 const executeGetLabelDimensionsInBrowser = async ({ page, input }) => {
   function thisIsExecutedRemotely (input) {
-    return window.renderHorizontalLabel(input) // renderHorizontalLabel is defined in renderLabels.html
+    return window.renderVerticalLabel(input) // renderVerticalLabel is defined in renderLabels.html
   }
+  console.log('input')
+  console.log(JSON.stringify(input, {}, 2))
 
   return page.evaluate(thisIsExecutedRemotely, input)
 }
