@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+</head>
+<body>
+  <svg class="canvas" id="svg-canvas" width="4000" height="4000"></svg>
+  <script src="/external/d3.js"></script>
+  <script src="/js/fixtures.js"></script>
+  <script src="/js/addLabelUtilsToWindow.js"></script>
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+      window.testCases.horizontalOrientation.alignment.forEach(testCase => {
+        window.callAddLabel(testCase)
+      })
+    })
+  </script>
+</body>
+</html>
+
+

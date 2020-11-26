@@ -6,7 +6,7 @@
     "assets",
     "build",
     "dist",
-    "internal_www",
+    "test/web_server",
     "node_modules"
   ]
 }
