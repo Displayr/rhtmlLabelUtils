@@ -43,8 +43,8 @@ const translateToHorizontal = ({ orientation, maxWidth, maxHeight }) => {
   }
 }
 
-// TODO account for innerLinePadding
-function _splitIntoLines ({ parentContainer,
+function _splitIntoLines ({
+  parentContainer,
   fontSize = 12,
   fontFamily = 'sans-serif',
   fontWeight = 'normal',
@@ -53,7 +53,7 @@ function _splitIntoLines ({ parentContainer,
   maxLines = null,
   tokens,
   joinCharacter,
-  orientation: untranslatedOrientation,
+  orientation: untranslatedOrientation = HORIZONTAL,
   innerLinePadding = 1,
 } = {}) {
   let currentLine = []

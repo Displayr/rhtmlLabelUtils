@@ -20,7 +20,9 @@ jest.setTimeout(timeout)
 const toMatchImageSnapshot = configureToMatchImageSnapshot(imageSnapshotSettings)
 expect.extend({ toMatchImageSnapshot })
 
-describe('getHorizontalLabelDimensions output and snapshot verification:', () => {
+const { horizontalAlignment, verticalAlignment, orientation } = require('../src/lib/enums')
+
+describe('addHorizontalWrappedLabel:', () => {
   let browser
   let page
   let svgBoundingBox
@@ -40,7 +42,7 @@ describe('getHorizontalLabelDimensions output and snapshot verification:', () =>
     await browser.close()
   })
 
-  test('addLabel', async () => {
+  test('alignment combinations', async () => {
     await executeReset({ page })
 
     const bounds = { width: 100, height: 100 }
@@ -48,7 +50,7 @@ describe('getHorizontalLabelDimensions output and snapshot verification:', () =>
 
     function thisIsExecutedRemotely (offset, bounds) {
       return window.callAddLabel({
-        text: 'foo banana stana rama hama cooko cabana rama stama lorem',
+        text: '1 22 333 4444 55555 6666666 55555 4444 333 22 1',
         offset,
         bounds,
       })

@@ -23,9 +23,7 @@ jest.setTimeout(timeout)
 const toMatchImageSnapshot = configureToMatchImageSnapshot(imageSnapshotSettings)
 expect.extend({ toMatchImageSnapshot })
 
-const ECHO_COMPUTED_DIMENSIONS = false // NB useful for seeding text expectations
-
-describe('getHorizontalLabelDimensions output and snapshot verification:', () => {
+describe('split into lines:', () => {
   let browser
   let page
   let svgBoundingBox
@@ -56,7 +54,6 @@ describe('getHorizontalLabelDimensions output and snapshot verification:', () =>
         fontWeight: 'normal',
         maxWidth: 100,
         maxHeight: null,
-        rotation: 0,
       })
     }
 

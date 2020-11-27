@@ -59,6 +59,7 @@ On the why a bit:
 * () support onclick
 * () add html/svg class specification / inspect current classes
 * () In several places we still just assume height = fontSize 
+* () split snapshots into multiple directories
 
 Test Notes
 ---
