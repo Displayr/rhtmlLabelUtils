@@ -14,9 +14,9 @@ const {
   canvasSelector,
   testUrl,
   snapshotExtraPadding
-} = require('./getLabelDimensions.settings')
+} = require('../utils/getLabelDimensions.settings')
 
-const testCases = require('./getLabelDimensions.testCases')
+const testCases = require('../utils/getLabelDimensions.testCases')
 const tests = testCases.map(testConfig => [`horizontal-${testConfig.name}`, testConfig]) // map to expected jest test.each format
 
 jest.setTimeout(timeout)

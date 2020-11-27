@@ -6,7 +6,7 @@ import 'regenerator-runtime/runtime'
 
 const puppeteer = require('puppeteer')
 const { configureToMatchImageSnapshot } = require('jest-image-snapshot')
-const { orientation: { HORIZONTAL } } = require('../src/lib/enums')
+const { orientation: { BOTTOM_TO_TOP } } = require('../../src/lib/enums')
 
 const {
   puppeteerSettings,
@@ -16,17 +16,20 @@ const {
   canvasSelector,
   testUrl,
   snapshotExtraPadding
-} = require('./getLabelDimensions.settings')
-const testCases = require('./getLabelDimensions.testCases')
-const tests = testCases.map(testConfig => [`horizontal-${testConfig.name}`, testConfig]) // map to expected jest test.each format
+} = require('../utils/getLabelDimensions.settings')
+
+
+const { executeReset, executeGetSvgCanvasBoundingBox, waitForTestPageToLoad } = require('../utils/pageInteractions')
+const asyncForEach = require('../utils/asyncForEach')
+
+const testCases = require('../utils/getLabelDimensions.testCases')
+const tests = testCases.map(testConfig => [`bottomToTop-${testConfig.name}`, testConfig]) // map to expected jest test.each format
 
 jest.setTimeout(timeout)
 const toMatchImageSnapshot = configureToMatchImageSnapshot(imageSnapshotSettings)
 expect.extend({ toMatchImageSnapshot })
 
-const ECHO_COMPUTED_DIMENSIONS = false // NB useful for seeding text expectations
-
-describe('getSingleLineLabelDimensions orientation=HORIZONTAL:', () => {
+describe('getSingleLineLabelDimensions orientation=BOTTOM_TO_TOP:', () => {
   let browser
   let page
   let svgBoundingBox
@@ -52,20 +55,19 @@ describe('getSingleLineLabelDimensions orientation=HORIZONTAL:', () => {
     const combinations = testConfig.combinations
 
     let currentOffset = originOffset
-    let maxWidth = 0
+    let tallestSnapshot = 0
     await asyncForEach(combinations, async (combination, index) => {
       const output = await executeGetLabelDimensionsInBrowser({
         page,
         input: {
           ...combination,
           text: testConfig.text,
-          offset: { x: 0, y: currentOffset }
+          offset: { x: currentOffset, y: 0 }
         }
       })
       if (testConfig.output) { expect(output).toEqual(testConfig.output) }
-      else if (ECHO_COMPUTED_DIMENSIONS) { console.log(`test ${testConfig.name} missing excepted output. Actual output. `, JSON.stringify(output)) }
-      currentOffset += (output.height + 20)
-      maxWidth = Math.max(maxWidth, output.width)
+      currentOffset += (output.width + 20)
+      tallestSnapshot = Math.max(tallestSnapshot, output.height)
     })
 
     let svgCanvas = await page.$(canvasSelector)
@@ -73,8 +75,8 @@ describe('getSingleLineLabelDimensions orientation=HORIZONTAL:', () => {
       clip: {
         x: svgBoundingBox.x + originOffset - snapshotExtraPadding,
         y: svgBoundingBox.y + originOffset - snapshotExtraPadding,
-        width: Math.max(100, maxWidth + 2 * snapshotExtraPadding),
-        height: Math.max(20, currentOffset + 2 * snapshotExtraPadding)
+        width: Math.max(20, currentOffset + 2 * snapshotExtraPadding),
+        height: Math.max(100, tallestSnapshot + 2 * snapshotExtraPadding),
       }
     })
 
@@ -87,32 +89,5 @@ const executeGetLabelDimensionsInBrowser = async ({ page, input }) => {
     return window.renderSingleLineLabel(Object.assign(input, { orientation })) // renderSingleLineLabel is defined in renderLabels.html
   }
 
-  return page.evaluate(thisIsExecutedRemotely, input, HORIZONTAL)
-}
-
-const executeReset = async ({ page }) => {
-  function thisIsExecutedRemotely () {
-    return window.resetSvgContents() // resetSvgContents is defined in renderLabels.html
-  }
-
-  return page.evaluate(thisIsExecutedRemotely)
-}
-
-const executeGetSvgCanvasBoundingBox = async ({ page }) => {
-  function thisIsExecutedRemotely (canvasSelector) {
-    const { bottom, height, left, right, top, width, x, y } = document.querySelector(canvasSelector).getBoundingClientRect()
-    return { bottom, height, left, right, top, width, x, y }
-  }
-
-  return page.evaluate(thisIsExecutedRemotely, canvasSelector)
-}
-
-const waitForTestPageToLoad = async ({ page }) => page.waitForFunction(selectorString => {
-  return document.querySelectorAll(selectorString).length
-}, { timeout }, canvasSelector)
-
-async function asyncForEach (array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array)
-  }
+  return page.evaluate(thisIsExecutedRemotely, input, BOTTOM_TO_TOP)
 }

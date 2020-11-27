@@ -14,13 +14,19 @@ const {
   canvasSelector,
   testUrl,
   snapshotExtraPadding
-} = require('./getLabelDimensions.settings')
+} = require('../utils/getLabelDimensions.settings')
+
+const {
+  executeReset,
+  executeGetSvgCanvasBoundingBox,
+  waitForTestPageToLoad,
+} = require('../utils/pageInteractions')
 
 jest.setTimeout(timeout)
 const toMatchImageSnapshot = configureToMatchImageSnapshot(imageSnapshotSettings)
 expect.extend({ toMatchImageSnapshot })
 
-const { horizontalAlignment, verticalAlignment, orientation } = require('../src/lib/enums')
+const { horizontalAlignment, verticalAlignment, orientation } = require('../../src/lib/enums')
 
 describe('addHorizontalWrappedLabel:', () => {
   let browser
@@ -71,24 +77,3 @@ describe('addHorizontalWrappedLabel:', () => {
     expect(image).toMatchImageSnapshot({ customSnapshotIdentifier: 'addLabel' })
   })
 })
-
-const executeReset = async ({ page }) => {
-  function thisIsExecutedRemotely () {
-    return window.resetSvgContents() // resetSvgContents is defined in renderLabels.html
-  }
-
-  return page.evaluate(thisIsExecutedRemotely)
-}
-
-const executeGetSvgCanvasBoundingBox = async ({ page }) => {
-  function thisIsExecutedRemotely (canvasSelector) {
-    const { bottom, height, left, right, top, width, x, y } = document.querySelector(canvasSelector).getBoundingClientRect()
-    return { bottom, height, left, right, top, width, x, y }
-  }
-
-  return page.evaluate(thisIsExecutedRemotely, canvasSelector)
-}
-
-const waitForTestPageToLoad = async ({ page }) => page.waitForFunction(selectorString => {
-  return document.querySelectorAll(selectorString).length
-}, { timeout }, canvasSelector)
