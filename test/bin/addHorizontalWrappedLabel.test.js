@@ -1,28 +1,18 @@
 /* global jest */
 /* global expect */
 
-import 'core-js/stable'
-import 'regenerator-runtime/runtime'
-
 const _ = require('lodash')
-const puppeteer = require('puppeteer')
-const { configureToMatchImageSnapshot } = require('jest-image-snapshot')
+
 const {
-  puppeteerSettings,
-  imageSnapshotSettings,
-  timeout,
-  originOffset, // must match renderLabels.html
-  canvasSelector,
-  testUrl,
-  snapshotExtraPadding
-} = require('../utils/getLabelDimensions.settings')
-
-const { executeReset, executeGetSvgCanvasBoundingBox, waitForTestPageToLoad } = require('../utils/pageInteractions')
-const asyncForEach = require('../utils/asyncForEach')
-
-jest.setTimeout(timeout)
-const toMatchImageSnapshot = configureToMatchImageSnapshot(imageSnapshotSettings)
-expect.extend({ toMatchImageSnapshot })
+  asyncUtils: { asyncForEach },
+  settings: {
+    canvasSelector,
+    originOffset,
+    snapshotExtraPadding,
+  },
+  pageInteractions: { executeReset },
+  testSetup: { beforeAllFixtureFactory, afterAllFixtureFactory }
+} = require('../utils')
 
 const enums = require('../../src/lib/enums')
 const {
@@ -31,26 +21,12 @@ const {
 } = enums
 
 describe('addHorizontalWrappedLabel:', () => {
-  let browser
-  let page
-  let svgBoundingBox
-
-  beforeAll(async () => {
-    browser = await puppeteer.launch(puppeteerSettings)
-    page = await browser.newPage()
-    page.on('console', (msg) => console.log(msg._text))
-    await page.goto(testUrl)
-    await waitForTestPageToLoad({page})
-
-    svgBoundingBox = await executeGetSvgCanvasBoundingBox({page})
-  })
-
-  afterAll(async () => {
-    await page.close()
-    await browser.close()
-  })
+  let testScope = {}
+  beforeAll(beforeAllFixtureFactory(testScope))
+  afterAll(afterAllFixtureFactory(testScope))
 
   test('alignment combinations', async () => {
+    const { page, svgBoundingBox } = testScope
     await executeReset({page})
 
     const bounds = {width: 100, height: 100}
