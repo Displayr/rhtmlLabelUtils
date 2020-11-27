@@ -2,6 +2,8 @@ const { splitIntoLinesByCharacter, splitIntoLinesByWord } = require('./splitInto
 const enums = require('./enums')
 
 const horizontalRenderer = require('./render/horizontal')
+const topToBottomRenderer = require('./render/topToBottom')
+const bottomToTopRenderer = require('./render/bottomToTop')
 
 const addLabel = ({
   parentContainer,
@@ -36,7 +38,8 @@ const addLabel = ({
     orientation,
   })
 
-  horizontalRenderer({
+  const renderer = getRenderer(orientation)
+  renderer({
     parentContainer,
     lines,
     fontSize,
@@ -48,6 +51,15 @@ const addLabel = ({
     horizontalAlignment,
     innerLinePadding,
   })
+}
+
+const getRenderer = orientation => {
+  switch(orientation) {
+    case enums.orientation.HORIZONTAL: return horizontalRenderer
+    case enums.orientation.TOP_TO_BOTTOM: return topToBottomRenderer
+    case enums.orientation.BOTTOM_TO_TOP: return bottomToTopRenderer
+    default: throw new Error(`unknown orientation: '${orientation}'`)
+  }
 }
 
 module.exports = {

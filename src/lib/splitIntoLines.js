@@ -1,5 +1,5 @@
 const { getSingleLineLabelDimensions } = require('./getSingleLineLabelDimensions')
-const { orientation: { HORIZONTAL }} = require('./enums')
+const { orientation: { HORIZONTAL, TOP_TO_BOTTOM, BOTTOM_TO_TOP }} = require('./enums')
 
 const isNull = value => value === null
 
@@ -8,47 +8,62 @@ const wordTokenizer = inputString => {
   return inputString2.split(' ').map(token => token.trim()).filter(token => token.length)
 }
 
-function splitIntoLinesByWord ({ parentContainer, text, fontSize = 12, fontFamily = 'sans-serif', fontWeight = 'normal', maxWidth, maxHeight, maxLines = null, orientation = HORIZONTAL } = {}) {
+function splitIntoLinesByWord ({ text = '', ...rest } = {}) {
+  if (text.length === 0) { return [text] }
   let tokens = wordTokenizer(text)
   return _splitIntoLines({
-    parentContainer,
-    text,
-    fontSize,
-    fontFamily,
-    fontWeight,
-    maxWidth,
-    maxHeight,
-    maxLines,
     tokens,
     joinCharacter: ' ',
-    orientation,
+    ...rest,
   })
 }
 
-function splitIntoLinesByCharacter ({ parentContainer, text, fontSize = 12, fontFamily = 'sans-serif', fontWeight = 'normal', maxWidth, maxHeight, maxLines = null, orientation = HORIZONTAL } = {}) {
+function splitIntoLinesByCharacter ({ text = '', ...rest } = {}) {
+  if (text.length === 0) { return [text] }
   let tokens = text.split('')
   return _splitIntoLines({
-    parentContainer,
-    text,
-    fontSize,
-    fontFamily,
-    fontWeight,
-    maxWidth,
-    maxHeight,
-    maxLines,
     tokens,
     joinCharacter: '',
-    orientation,
+    ...rest,
   })
 }
 
-function _splitIntoLines ({ parentContainer, text, fontSize = 12, fontFamily = 'sans-serif', fontWeight = 'normal', maxWidth = null, maxHeight = null, maxLines = null, tokens, joinCharacter, orientation } = {}) {
-  if (text.length === 0) { return [text] }
+// NB not sure if this will work. Depends if font rendering is same size wise horizontal vs vertical
+const translateToHorizontal = ({ orientation, maxWidth, maxHeight }) => {
+  if (orientation === HORIZONTAL) {
+    return { orientation, maxWidth, maxHeight }
+  } else {
+    return {
+      orientation: HORIZONTAL,
+      maxWidth: maxHeight, // NB swap is deliberate, not a typo
+      maxHeight: maxWidth, // NB swap is deliberate, not a typo
+    }
+  }
+}
+
+// TODO account for innerLinePadding
+function _splitIntoLines ({ parentContainer,
+  fontSize = 12,
+  fontFamily = 'sans-serif',
+  fontWeight = 'normal',
+  maxWidth: untranslatedMaxWidth = null,
+  maxHeight: untranslatedMaxHeight = null,
+  maxLines = null,
+  tokens,
+  joinCharacter,
+  orientation: untranslatedOrientation,
+} = {}) {
   let currentLine = []
   let lines = []
   let totalHeight = 0
   const truncationString = '...'
   let token = null
+
+  const { orientation, maxWidth, maxHeight } = translateToHorizontal({
+    orientation: untranslatedOrientation,
+    maxWidth: untranslatedMaxWidth,
+    maxHeight: untranslatedMaxHeight
+  })
 
   const horizontalAndOnFirstLine = () => orientation === HORIZONTAL && lines.length === 0
   const widthExceeded = (width) => !isNull(maxWidth) && width > maxWidth
