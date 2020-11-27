@@ -36,6 +36,7 @@ const addLabel = ({
     maxHeight: bounds.height,
     maxLines,
     orientation,
+    innerLinePadding,
   })
 
   const renderer = getRenderer(orientation)

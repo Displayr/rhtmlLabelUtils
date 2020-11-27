@@ -1,12 +1,14 @@
 const { getSingleLineLabelDimensions } = require('./getSingleLineLabelDimensions')
-const { orientation: { HORIZONTAL, TOP_TO_BOTTOM, BOTTOM_TO_TOP }} = require('./enums')
+const { orientation: { HORIZONTAL } } = require('./enums')
 
-const isNull = value => value === null
+// TODO this file needs a cleanup, but first it needs some test coverage
+// I have not really touched this file (yet) since extracting it into labelUtils repo
 
-const wordTokenizer = inputString => {
-  const inputString2 = inputString.replace(/<br>/g, ' <br> ')
-  return inputString2.split(' ').map(token => token.trim()).filter(token => token.length)
-}
+const wordTokenizer = inputString => inputString
+  .replace(/<br>/g, ' <br> ')
+  .split(' ')
+  .map(token => token.trim())
+  .filter(token => token.length)
 
 function splitIntoLinesByWord ({ text = '', ...rest } = {}) {
   if (text.length === 0) { return [text] }
@@ -52,6 +54,7 @@ function _splitIntoLines ({ parentContainer,
   tokens,
   joinCharacter,
   orientation: untranslatedOrientation,
+  innerLinePadding = 1,
 } = {}) {
   let currentLine = []
   let lines = []
@@ -65,19 +68,13 @@ function _splitIntoLines ({ parentContainer,
     maxHeight: untranslatedMaxHeight
   })
 
+  const isNull = value => value === null
   const horizontalAndOnFirstLine = () => orientation === HORIZONTAL && lines.length === 0
-  const widthExceeded = (width) => !isNull(maxWidth) && width > maxWidth
-  const heightExceeded = (height) => !isNull(maxHeight) && height > maxHeight
-  const getDimensionsFromString = (string) => getSingleLineLabelDimensions({
-    parentContainer,
-    text: string,
-    fontSize,
-    fontFamily,
-    fontWeight,
-    orientation
-  })
+  const widthExceeded = width => !isNull(maxWidth) && width > maxWidth
+  const heightExceeded = height => !isNull(maxHeight) && height > maxHeight
+  const getDimensionsFromString = text => getSingleLineLabelDimensions({ parentContainer, text, fontSize, fontFamily, fontWeight, orientation })
   const getDimensionsFromArray = (tokenArray) => getDimensionsFromString(tokenArray.join(joinCharacter))
-  const getDimensions = (arrayOrString) => (Array.isArray(arrayOrString))
+  const getDimensions = arrayOrString => (Array.isArray(arrayOrString))
     ? getDimensionsFromArray(arrayOrString)
     : getDimensionsFromString(arrayOrString)
 
@@ -100,7 +97,7 @@ function _splitIntoLines ({ parentContainer,
     if (token === '<br>') {
       const { height } = getDimensions(currentLine)
       lines.push(`${currentLine.join(joinCharacter)}`)
-      totalHeight += height
+      totalHeight += (height + innerLinePadding)
       currentLine = []
       continue
     }
@@ -135,7 +132,7 @@ function _splitIntoLines ({ parentContainer,
       } else {
         tokens.unshift(currentLine.pop())
         lines.push(`${currentLine.join(joinCharacter)}`)
-        totalHeight += height
+        totalHeight += (height + innerLinePadding)
         currentLine = []
       }
     }
