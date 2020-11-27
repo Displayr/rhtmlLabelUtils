@@ -1,7 +1,7 @@
-const { getHorizontalLabelDimensions, getVerticalLabelDimensions }  = require('../../src')
+const { getSingleLineLabelDimensions }  = require('../../src')
 
 document.addEventListener('DOMContentLoaded', () => {
   window.labelUtils = {
-    getHorizontalLabelDimensions, getVerticalLabelDimensions
+    getSingleLineLabelDimensions
   }
 }, false)

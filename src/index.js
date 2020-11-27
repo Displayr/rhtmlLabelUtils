@@ -1,6 +1,5 @@
-const { getHorizontalLabelDimensions, getVerticalLabelDimensions } = require('./lib/getLabelDimensions')
+const { getSingleLineLabelDimensions } = require('./lib/getLabelDimensions')
 
 module.exports = {
-  getHorizontalLabelDimensions,
-  getVerticalLabelDimensions,
+  getSingleLineLabelDimensions
 }

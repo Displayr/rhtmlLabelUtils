@@ -4,8 +4,8 @@
 </head>
 <body>
   <h2>To run a test in dev tools execute something like this:</h2>
-  <pre>renderHorizontalLabel({text: "Label 1","fontSize":"20", "fontFamily":"Arial","fontWeight":"lighter","offset":{"x":0,"y":50}})</pre>
-  <pre>renderVerticalLabel({text: "Label 1","fontSize":"20", "fontFamily":"Arial","fontWeight":"lighter","offset":{"x":50,"y":50}})</pre>
+  <pre>(horizontal) renderSingleLineLabel({text: "Label 1","fontSize":"20", "fontFamily":"Arial","fontWeight":"lighter","rotation":0, "offset":{"x":0,"y":50}})</pre>
+  <pre>(vertical) renderSingleLineLabel({text: "Label 1","fontSize":"20", "fontFamily":"Arial","fontWeight":"lighter","rotation":90, "offset":{"x":50,"y":50}})</pre>
   <pre>resetSvgContents()</pre>
   <svg class="canvas" id="svg-canvas" width="4000" height="4000"></svg>
   <script src="/external/d3.js"></script>
@@ -17,44 +17,19 @@
       d3.select('#svg-canvas').selectAll("*").remove();
     }
 
-    window.renderHorizontalLabel = (input) => {
-      // console.log(`called renderHorizontalLabel with: ${JSON.stringify(input)}`)
-      const parentContainer = d3.select('#svg-canvas')
-      const output = window.labelUtils.getHorizontalLabelDimensions({ parentContainer, ...input })
-
-      parentContainer
-        .append('text')
-        .attr('class', `test-label`)
-        .attr('x', origin.x + input.offset.x)
-        .attr('y', origin.y + input.offset.y)
-        .attr('font-family', input.fontFamily)
-        .attr('font-size', (`${input.fontSize}`.indexOf('px') === -1) ? `${input.fontSize}px` : `${input.fontSize}`)
-        .attr('font-weight', input.fontWeight)
-        .attr('dominant-baseline', 'text-before-edge')
-        .attr('fill', 'black')
-        .text(input.text)
-
-      parentContainer
-        .append('rect')
-        .attr('class', `test-box`)
-        .attr('x', origin.x + input.offset.x)
-        .attr('y', origin.y + input.offset.y)
-        .attr('width', output.width)
-        .attr('height', output.height)
-        .attr('fill', 'none')
-        .attr('stroke', 'red')
-        .attr('stroke-width', 0.5)
-
-      return output
-    }
-
-    window.renderVerticalLabel = (input) => {
+    window.renderSingleLineLabel = (input) => {
       // console.log(`called renderVerticalLabel with: ${JSON.stringify(input)}`)
       const parentContainer = d3.select('#svg-canvas')
-      const output = window.labelUtils.getVerticalLabelDimensions({ parentContainer, ...input })
+      const output = window.labelUtils.getSingleLineLabelDimensions({ parentContainer, ...input })
 
       const container = parentContainer.append('g')
         .attr('transform', `translate(${origin.x + input.offset.x},${origin.y + input.offset.y})`)
+
+      const rotationTransformsLookup = {
+        0: '',
+        90: `translate(${output.width},0),rotate(${input.rotation})`,
+        [-90]: `translate(0,${output.height}),rotate(${input.rotation})`
+      }
 
       const textElement = container.append('text')
         .attr('class', `test-label`)
@@ -62,7 +37,7 @@
         .attr('y', 0)
         .attr('dy', 0)
         .attr('dominant-baseline', 'text-before-edge')
-        .attr('transform', `translate(${output.width},0),rotate(90)`)
+        .attr('transform', rotationTransformsLookup[input.rotation])
 
       textElement.append('tspan')
         .attr('x', 0)

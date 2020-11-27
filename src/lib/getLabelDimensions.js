@@ -2,21 +2,15 @@ let uniqueId = 0
 function getUniqueId () { return uniqueId++ }
 
 const DEBUG = true
-
-// NB parentContainer must be a d3 selection
-function getHorizontalLabelDimensions ({ parentContainer, text, fontSize, fontFamily, fontWeight }) {
-  return getLabelDimensions({ parentContainer, text, fontSize, fontFamily, fontWeight, rotation: 0 })
-}
-
-function getVerticalLabelDimensions ({ parentContainer, text, fontSize, fontFamily, fontWeight }) {
-  return getLabelDimensions({ parentContainer, text, fontSize, fontFamily, fontWeight, rotation: 90 })
-}
-
-function getLabelDimensions ({ parentContainer, text, fontSize: fontSizeStringOrNumber = '16px', fontFamily = 'Times', fontWeight = 'normal', rotation = 0 }) {
+const SUPPORTED_ROTATIONS = [0,90,-90]
+function getSingleLineLabelDimensions ({ parentContainer, text, fontSize: fontSizeStringOrNumber = '16px', fontFamily = 'Times', fontWeight = 'normal', rotation: rotationStringOrNumber = 0 }) {
   const uniqueId = `tempLabel-${getUniqueId()}`
 
   if (!`${fontSizeStringOrNumber}`.match(/^[\d]+(px)?$/)) { throw new Error(`Invalid fontSize '${fontSizeStringOrNumber}'. Must be numeric with optional trailing 'px'. (em|rem) not supported`)}
   const fontSize = (`${fontSizeStringOrNumber}`.indexOf('px') === -1) ? `${fontSizeStringOrNumber}px` : `${fontSizeStringOrNumber}`
+
+  const rotation = parseInt(rotationStringOrNumber)
+  if (!SUPPORTED_ROTATIONS.includes(rotation)) { throw new Error(`Rotation ${rotationStringOrNumber} not supported`) }
 
   const container = parentContainer.append('g')
     .attr('class', 'tempLabel')
@@ -37,23 +31,21 @@ function getLabelDimensions ({ parentContainer, text, fontSize: fontSizeStringOr
     .style('dominant-baseline', 'text-before-edge')
     .text(text)
 
-  // const { x, y, width, height } = textElement.node().getBBox()
   const { x, y, width, height } = textElement.node().getBoundingClientRect()
-
 
   if (DEBUG) {
     const computedWidth = textElement.node().getComputedTextLength()
 
     if (DEBUG && Math.abs(computedWidth - width) > 1) {
-      console.warn(`getLabelDimensions('${text}'): discrepancy between getBbox().width and getComputedTextLength (bb:${width}, comp:${computedWidth}`)
+      console.warn(`getSingleLineLabelDimensions('${text}'): discrepancy between getBbox().width and getComputedTextLength (bb:${width}, comp:${computedWidth}`)
     }
 
     if (DEBUG && x !== 0) {
-      console.warn(`getLabelDimensions('${text}'): got non zero x offset: ${x}`)
+      console.warn(`getSingleLineLabelDimensions('${text}'): got non zero x offset: ${x}`)
     }
 
     if (DEBUG && y !== 0) {
-      console.warn(`getLabelDimensions('${text}'): got non zero y offset: ${y}`)
+      console.warn(`getSingleLineLabelDimensions('${text}'): got non zero y offset: ${y}`)
     }
   }
 
@@ -61,4 +53,4 @@ function getLabelDimensions ({ parentContainer, text, fontSize: fontSizeStringOr
   return { width, height }
 }
 
-module.exports = { getHorizontalLabelDimensions, getVerticalLabelDimensions }
+module.exports = { getSingleLineLabelDimensions }

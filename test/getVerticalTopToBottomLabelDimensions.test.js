@@ -17,7 +17,7 @@ const {
 } = require('./getLabelDimensions.settings')
 
 const testCases = require('./getLabelDimensions.testCases')
-const tests = testCases.map(testConfig => [`vertical-${testConfig.name}`, testConfig]) // map to expected jest test.each format
+const tests = testCases.map(testConfig => [`topToBottom-${testConfig.name}`, testConfig]) // map to expected jest test.each format
 
 jest.setTimeout(timeout)
 const toMatchImageSnapshot = configureToMatchImageSnapshot(imageSnapshotSettings)
@@ -83,10 +83,8 @@ describe('getVerticalLabelDimensions output and snapshot verification:', () => {
 
 const executeGetLabelDimensionsInBrowser = async ({ page, input }) => {
   function thisIsExecutedRemotely (input) {
-    return window.renderVerticalLabel(input) // renderVerticalLabel is defined in renderLabels.html
+    return window.renderSingleLineLabel(Object.assign(input, { rotation: 90 })) // renderSingleLineLabel is defined in renderLabels.html
   }
-  console.log('input')
-  console.log(JSON.stringify(input, {}, 2))
 
   return page.evaluate(thisIsExecutedRemotely, input)
 }
