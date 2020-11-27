@@ -1,8 +1,7 @@
-import _ from "lodash";
-
 const { splitIntoLinesByCharacter, splitIntoLinesByWord } = require('./splitIntoLines')
 const enums = require('./enums')
-const orientationToRotation = require('../utils/orientationToRotation')
+
+const horizontalRenderer = require('./render/horizontal')
 
 const addLabel = ({
   parentContainer,
@@ -11,7 +10,7 @@ const addLabel = ({
   fontFamily = 'sans-serif',
   fontWeight = 'normal',
   fontColor = '#000000',
-  bounds: { width, height } = { width: 100, height: 100 },
+  bounds = { width: 100, height: 100 },
   maxLines = null,
   orientation = enums.orientation.HORIZONTAL,
   wrap = enums.wrap.WORD,
@@ -25,92 +24,32 @@ const addLabel = ({
     ? splitIntoLinesByWord
     : splitIntoLinesByCharacter
 
-  const rotation = orientationToRotation(orientation)
-
   const lines = wrapFunction({
     parentContainer,
     text,
     fontSize,
     fontFamily,
     fontWeight,
-    maxWidth: width,
-    maxHeight: height,
+    maxWidth: bounds.width,
+    maxHeight: bounds.height,
     maxLines,
     orientation,
   })
 
-  const extraSpace = height -
-    (fontSize * lines.length + innerLinePadding * (lines.length - 1))
-
-  const textYOffset = (verticalAlignment === 'center' && extraSpace > 0)
-    ? extraSpace / 2
-    : 0
-
-  const textSelection = parentContainer.append('text')
-    .attr('x', 0)
-    .attr('y', 0)
-    .attr('dy', 0)
-    .style('font-family', fontFamily)
-    .style('font-size', fontSize)
-    .style('font-weight', fontWeight)
-    .style('fill', fontColor)
-
-  switch (horizontalAlignment) {
-    case enums.horizontalAlignment.LEFT:
-      textSelection
-        .attr('transform', `translate(0, ${textYOffset})`)
-        .style('text-anchor', 'start')
-      break
-    case enums.horizontalAlignment.CENTER:
-      textSelection
-        .attr('transform', `translate(${width / 2}, ${textYOffset})`)
-        .style('text-anchor', 'middle')
-      break
-    case enums.horizontalAlignment.RIGHT:
-      textSelection
-        .attr('transform', `translate(${width}, ${textYOffset})`)
-        .style('text-anchor', 'end')
-      break
-    default:
-      throw new Error(`unknown horizontal alignment: '${horizontalAlignment}'`)
-  }
-
-  const useBoundsIfFirstRowAndFontTooLarge = (i) => (i === 0) ? Math.min(height, fontSize) : fontSize
-
-  switch (verticalAlignment) {
-    case enums.verticalAlignment.TOP:
-      _(lines).each((line, i) => {
-        textSelection.append('tspan')
-          .style('dominant-baseline', 'text-before-edge')
-          .attr('x', 0)
-          .attr('y', i * (fontSize + innerLinePadding))
-          .text(line)
-      })
-      break
-    case enums.verticalAlignment.CENTER:
-      _(lines).each((line, i) => {
-        textSelection.append('tspan')
-          .style('dominant-baseline', 'central')
-          .attr('x', 0)
-          .attr('y', useBoundsIfFirstRowAndFontTooLarge(i) / 2 + i * (fontSize + innerLinePadding))
-          .text(line)
-      })
-      break
-    case enums.verticalAlignment.BOTTOM:
-      _(lines).reverse().each((line, i) => {
-        textSelection.append('tspan')
-          .style('dominant-baseline', 'text-after-edge')
-          .attr('x', 0)
-          .attr('y', height - i * (fontSize + innerLinePadding))
-          .text(line)
-      })
-      break
-    default:
-      throw new Error(`unknown vertical alignment: '${verticalAlignment}'`)
-  }
+  horizontalRenderer({
+    parentContainer,
+    lines,
+    fontSize,
+    fontFamily,
+    fontWeight,
+    fontColor,
+    bounds,
+    verticalAlignment,
+    horizontalAlignment,
+    innerLinePadding,
+  })
 }
 
 module.exports = {
   addLabel,
 }
-

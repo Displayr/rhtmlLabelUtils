@@ -43,6 +43,10 @@ For example, I have only ported a minimal version of `getLabelDimensionsUsingSvg
 
 The original versions of labelUtils have been collected in the [assets](./assets) directory.
 
+On the why a bit:
+
+* often you need to first specify preferred dimensions - which requires some analysis but not actual rendering. The the callee does some layout maths, then you get called with "this is the space you actually get", now render. So its important to not only expose render methods, but also the methods that can calculate expected dimensions.
+
 # TODO
 * (DEFER) add npm test script. 
   * Blocked on : `gulp serve` will never return. Solution is to mimic what is done in build
