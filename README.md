@@ -26,7 +26,7 @@ Testing notes:
 
 # Background / history / context
 
-labelUtils.js was introduced first in \[most likely\] rhtmlPitcographs and then propogated via copy / paste in to rhtmlDonut, rhtmlHeatmap, rhtmlMoonplot, rhtmlPalmTrees, and most recently into rhtmlLabeledScatter.
+labelUtils.js was introduced first in \[most likely\] rhtmlPictographs and then propogated via copy / paste in to rhtmlDonut, rhtmlHeatmap, rhtmlMoonplot, rhtmlPalmTrees, and most recently into rhtmlLabeledScatter.
 
 Each version was slightly different as updates were made and not applied to previous uses.
 
@@ -55,3 +55,40 @@ The original versions of labelUtils have been collected in the [assets](./assets
 * (DEFER) port something that will provide rendering instead of just maths
 * (DEFER) echo settings in snapshots
 * (DEFER) get list of font families to support based on what is available in Displayr UI
+
+Test Notes
+---
+
+* AddLabel:
+    * horizontal
+        * 9 alignment combos - with wrapping
+        * basic fontSize / Weight / Family / color tests
+        * respects bounds
+        * respects maxLines
+        * innerLinePadding
+        
+    * horizontal wrapping focused
+      * test wrap by word and character
+      * defer edge cases for now    
+    
+    * vertical topToBottom
+        * 9 alignment combos - with wrapping
+        * basic fontSize / Weight / Family / color tests
+        * respects bounds
+        * respects maxLines
+        * innerLinePadding
+        
+    * vertical topToBottom wrapping focused
+      * test wrap by word and character
+      * defer edge cases for now    
+      
+    * vertical bottomToTop
+        * 9 alignment combos - with wrapping
+        * basic fontSize / Weight / Family / color tests
+        * respects bounds
+        * respects maxLines
+        * innerLinePadding
+        
+    * vertical bottomToTop wrapping focused
+      * test wrap by word and character
+      * defer edge cases for now          

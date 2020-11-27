@@ -17,8 +17,6 @@ const {
 } = require('./getLabelDimensions.settings')
 
 const { enums } = require('../src')
-const testCases = require('./getLabelDimensions.testCases')
-
 
 jest.setTimeout(timeout)
 const toMatchImageSnapshot = configureToMatchImageSnapshot(imageSnapshotSettings)
@@ -49,11 +47,11 @@ describe('getHorizontalLabelDimensions output and snapshot verification:', () =>
   test('addLabel', async () => {
     await executeReset({ page })
 
-    const originOffset = { x: 200, y: 200 }
     const bounds = { width: 100, height: 100 }
 
     function thisIsExecutedRemotely (originOffset, bounds) {
-      return window.addLabel({
+      return window.callAddLabel({
+        text: 'foo banana stana rama hama cooko cabana rama stama lorem',
         offset: originOffset,
         bounds,
         orientation: 'HORIZONTAL',

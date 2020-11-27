@@ -1,7 +1,9 @@
+const { orientation: { HORIZONTAL, TOP_TO_BOTTOM, BOTTOM_TO_TOP } } = require('./enums')
+
 let uniqueId = 0
 function getUniqueId () { return uniqueId++ }
 
-const DEBUG = true
+const DEBUG = false
 const SUPPORTED_ROTATIONS = [0,90,-90]
 function getSingleLineLabelDimensions ({ parentContainer, text, fontSize: fontSizeStringOrNumber = '16px', fontFamily = 'Times', fontWeight = 'normal', rotation: rotationStringOrNumber = 0 }) {
   const uniqueId = `tempLabel-${getUniqueId()}`

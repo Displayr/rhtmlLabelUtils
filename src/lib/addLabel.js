@@ -1,54 +1,33 @@
 import _ from "lodash";
 
 const { splitIntoLinesByCharacter, splitIntoLinesByWord } = require('./splitIntoLines')
-
-const orientationOptions = {
-  HORIZONTAL: 'HORIZONTAL',
-  TOP_TO_BOTTOM: 'TOP_TO_BOTTOM',
-  BOTTOM_TO_TOP: 'BOTTOM_TO_TOP',
-}
-
-const wrapOptions = {
-  WORD: 'WORD',
-  CHARACTER: 'CHARACTER',
-}
-
-const horizontalAlignmentOptions = {
-  LEFT: 'LEFT',
-  CENTER: 'CENTER',
-  RIGHT: 'RIGHT',
-}
-
-const verticalAlignmentOptions = {
-  TOP: 'TOP',
-  CENTER: 'CENTER',
-  BOTTOM: 'BOTTOM',
-}
+const enums = require('./enums')
 
 const addLabel = ({
   parentContainer,
-  text,
+  text = 'test label',
   fontSize = 12,
   fontFamily = 'sans-serif',
   fontWeight = 'normal',
   fontColor = '#000000',
-  bounds: { width, height },
+  bounds: { width, height } = { width: 100, height: 100 },
   maxLines = null,
-  orientation = orientationOptions.HORIZONTAL,
-  wrap = wrapOptions.WORD,
-  verticalAlignment = verticalAlignmentOptions.TOP,
-  horizontalAlignment = verticalAlignmentOptions.CENTER,
+  orientation = enums.orientation.HORIZONTAL,
+  wrap = enums.wrap.WORD,
+  verticalAlignment = enums.verticalAlignment.TOP,
+  horizontalAlignment = enums.verticalAlignment.CENTER,
   innerLinePadding = 1,
 }) => {
   // TODO INPUT VALIDATION
 
-  const wrapFunction = (wrap === wrapOptions.WORD)
+  const wrapFunction = (wrap === enums.wrap.WORD)
     ? splitIntoLinesByWord
     : splitIntoLinesByCharacter
 
   const rotation = getRotation(orientation)
 
   const lines = wrapFunction({
+    parentContainer,
     text,
     fontSize,
     fontFamily,
@@ -76,17 +55,17 @@ const addLabel = ({
     .style('fill', fontColor)
 
   switch (horizontalAlignment) {
-    case horizontalAlignmentOptions.LEFT:
+    case enums.horizontalAlignment.LEFT:
       textSelection
         .attr('transform', `translate(0, ${textYOffset})`)
         .style('text-anchor', 'start')
       break
-    case horizontalAlignmentOptions.CENTER:
+    case enums.horizontalAlignment.CENTER:
       textSelection
         .attr('transform', `translate(${width / 2}, ${textYOffset})`)
         .style('text-anchor', 'middle')
       break
-    case horizontalAlignmentOptions.RIGHT:
+    case enums.horizontalAlignment.RIGHT:
       textSelection
         .attr('transform', `translate(${width}, ${textYOffset})`)
         .style('text-anchor', 'end')
@@ -98,7 +77,7 @@ const addLabel = ({
   const useBoundsIfFirstRowAndFontTooLarge = (i) => (i === 0) ? Math.min(height, fontSize) : fontSize
 
   switch (verticalAlignment) {
-    case verticalAlignmentOptions.TOP:
+    case enums.verticalAlignment.TOP:
       _(lines).each((line, i) => {
         textSelection.append('tspan')
           .style('dominant-baseline', 'text-before-edge')
@@ -107,7 +86,7 @@ const addLabel = ({
           .text(line)
       })
       break
-    case verticalAlignmentOptions.CENTER:
+    case enums.verticalAlignment.CENTER:
       _(lines).each((line, i) => {
         textSelection.append('tspan')
           .style('dominant-baseline', 'central')
@@ -116,7 +95,7 @@ const addLabel = ({
           .text(line)
       })
       break
-    case verticalAlignmentOptions.BOTTOM:
+    case enums.verticalAlignment.BOTTOM:
       _(lines).reverse().each((line, i) => {
         textSelection.append('tspan')
           .style('dominant-baseline', 'text-after-edge')
@@ -132,21 +111,15 @@ const addLabel = ({
 
 module.exports = {
   addLabel,
-  options: {
-    orientation: orientationOptions,
-    wrap: wrapOptions,
-    horizontalAlignment: horizontalAlignmentOptions,
-    verticalAlignment: verticalAlignmentOptions,
-  },
 }
 
 const getRotation = orientation => {
   switch (orientation) {
-    case orientationOptions.HORIZONTAL:
+    case enums.orientation.HORIZONTAL:
       return 0
-    case orientationOptions.BOTTOM_TO_TOP:
+    case enums.orientation.BOTTOM_TO_TOP:
       return -90
-    case orientationOptions.TOP_TO_BOTTOM:
+    case enums.orientation.TOP_TO_BOTTOM:
       return 90
     default:
       throw new Error(`unknown orientation: '${orientation}'`)

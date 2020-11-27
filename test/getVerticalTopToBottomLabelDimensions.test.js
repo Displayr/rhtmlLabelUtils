@@ -25,7 +25,7 @@ expect.extend({ toMatchImageSnapshot })
 
 const ECHO_COMPUTED_DIMENSIONS = false // NB useful for seeding text expectations
 
-describe('getVerticalLabelDimensions output and snapshot verification:', () => {
+describe('getSingleLineLabelDimensions orientation=TOP_TO_BOTTOM:', () => {
   let browser
   let page
   let svgBoundingBox

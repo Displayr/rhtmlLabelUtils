@@ -3,9 +3,13 @@
 <head>
 </head>
 <body>
-  <h2>To run a test in dev tools execute something like this:</h2>
-  <pre>(horizontal) renderSingleLineLabel({text: "Label 1","fontSize":"20", "fontFamily":"Arial","fontWeight":"lighter","rotation":0, "offset":{"x":0,"y":50}})</pre>
-  <pre>(vertical) renderSingleLineLabel({text: "Label 1","fontSize":"20", "fontFamily":"Arial","fontWeight":"lighter","rotation":90, "offset":{"x":50,"y":50}})</pre>
+  <h2>To run a test in dev tools execute one of the following:</h2>
+  <ul>
+    <li><strong>horizontal single line label:</strong> renderSingleLineLabel({text: "Label 1","fontSize":"20", "fontFamily":"Arial","fontWeight":"lighter","rotation":0, "offset":{"x":0,"y":50}})</li>
+    <li><strong>vertical</strong> renderSingleLineLabel({text: "Label 1","fontSize":"20", "fontFamily":"Arial","fontWeight":"lighter","rotation":90, "offset":{"x":50,"y":50}})</li>
+    <li><strong>addLabel</strong> renderSingleLineLabel({text: "Label 1","fontSize":"20", "fontFamily":"Arial","fontWeight":"lighter","rotation":90, "offset":{"x":50,"y":50}})</li>
+  </ul>
+
   <pre>resetSvgContents()</pre>
   <svg class="canvas" id="svg-canvas" width="4000" height="4000"></svg>
   <script src="/external/d3.js"></script>
@@ -68,11 +72,23 @@
       return output
     }
 
-    window.addLabel = (input) => {
+    window.callAddLabel = (input) => {
       const parentContainer = d3.select('#svg-canvas')
       const container = parentContainer.append('g')
-        .attr('transform', `translate(${input.offset.x},${input.offset.y})`)
+        .attr('transform', `translate(${origin.x + input.offset.x},${origin.y + input.offset.y})`)
       const output = window.labelUtils.addLabel({ parentContainer: container, ...input })
+
+      container
+        .append('rect')
+        .attr('class', `test-box`)
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', input.bounds.width)
+        .attr('height', input.bounds.height)
+        .attr('fill', 'none')
+        .attr('stroke', 'red')
+        .attr('stroke-width', 0.5)
+
       return output
     }
   </script>
