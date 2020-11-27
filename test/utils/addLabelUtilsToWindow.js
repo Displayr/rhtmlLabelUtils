@@ -1,7 +1,11 @@
-const { getSingleLineLabelDimensions }  = require('../../src')
+const { getSingleLineLabelDimensions, splitIntoLinesByWord, splitIntoLinesByCharacter, addLabel, enums }  = require('../../src')
 
 document.addEventListener('DOMContentLoaded', () => {
   window.labelUtils = {
-    getSingleLineLabelDimensions
+    getSingleLineLabelDimensions,
+    splitIntoLinesByWord,
+    splitIntoLinesByCharacter,
+    addLabel,
+    enums,
   }
 }, false)

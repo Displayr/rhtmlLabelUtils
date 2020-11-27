@@ -61,7 +61,20 @@
 
       return output
     }
-  </script>
 
+    window.executeSplintIntoLinesByWord = (input) => {
+      const parentContainer = d3.select('#svg-canvas')
+      const output = window.labelUtils.splitIntoLinesByWord({ parentContainer, ...input })
+      return output
+    }
+
+    window.addLabel = (input) => {
+      const parentContainer = d3.select('#svg-canvas')
+      const container = parentContainer.append('g')
+        .attr('transform', `translate(${input.offset.x},${input.offset.y})`)
+      const output = window.labelUtils.addLabel({ parentContainer: container, ...input })
+      return output
+    }
+  </script>
 </body>
 </html>
