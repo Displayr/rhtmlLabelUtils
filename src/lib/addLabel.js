@@ -2,6 +2,7 @@ import _ from "lodash";
 
 const { splitIntoLinesByCharacter, splitIntoLinesByWord } = require('./splitIntoLines')
 const enums = require('./enums')
+const orientationToRotation = require('../utils/orientationToRotation')
 
 const addLabel = ({
   parentContainer,
@@ -24,7 +25,7 @@ const addLabel = ({
     ? splitIntoLinesByWord
     : splitIntoLinesByCharacter
 
-  const rotation = getRotation(orientation)
+  const rotation = orientationToRotation(orientation)
 
   const lines = wrapFunction({
     parentContainer,
@@ -35,7 +36,7 @@ const addLabel = ({
     maxWidth: width,
     maxHeight: height,
     maxLines,
-    rotation,
+    orientation,
   })
 
   const extraSpace = height -
@@ -113,15 +114,3 @@ module.exports = {
   addLabel,
 }
 
-const getRotation = orientation => {
-  switch (orientation) {
-    case enums.orientation.HORIZONTAL:
-      return 0
-    case enums.orientation.BOTTOM_TO_TOP:
-      return -90
-    case enums.orientation.TOP_TO_BOTTOM:
-      return 90
-    default:
-      throw new Error(`unknown orientation: '${orientation}'`)
-  }
-}

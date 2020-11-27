@@ -6,6 +6,7 @@ import 'regenerator-runtime/runtime'
 
 const puppeteer = require('puppeteer')
 const { configureToMatchImageSnapshot } = require('jest-image-snapshot')
+const { orientation: { TOP_TO_BOTTOM } } = require('../src/lib/enums')
 const {
   puppeteerSettings,
   imageSnapshotSettings,
@@ -82,11 +83,11 @@ describe('getSingleLineLabelDimensions orientation=TOP_TO_BOTTOM:', () => {
 })
 
 const executeGetLabelDimensionsInBrowser = async ({ page, input }) => {
-  function thisIsExecutedRemotely (input) {
-    return window.renderSingleLineLabel(Object.assign(input, { rotation: 90 })) // renderSingleLineLabel is defined in renderLabels.html
+  function thisIsExecutedRemotely (input, orientation) {
+    return window.renderSingleLineLabel(Object.assign(input, { orientation })) // renderSingleLineLabel is defined in renderLabels.html
   }
 
-  return page.evaluate(thisIsExecutedRemotely, input)
+  return page.evaluate(thisIsExecutedRemotely, input, TOP_TO_BOTTOM)
 }
 
 const executeReset = async ({ page }) => {

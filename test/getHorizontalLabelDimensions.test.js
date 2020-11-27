@@ -6,6 +6,8 @@ import 'regenerator-runtime/runtime'
 
 const puppeteer = require('puppeteer')
 const { configureToMatchImageSnapshot } = require('jest-image-snapshot')
+const { orientation: { HORIZONTAL } } = require('../src/lib/enums')
+
 const {
   puppeteerSettings,
   imageSnapshotSettings,
@@ -15,7 +17,6 @@ const {
   testUrl,
   snapshotExtraPadding
 } = require('./getLabelDimensions.settings')
-
 const testCases = require('./getLabelDimensions.testCases')
 const tests = testCases.map(testConfig => [`horizontal-${testConfig.name}`, testConfig]) // map to expected jest test.each format
 
@@ -82,11 +83,11 @@ describe('getSingleLineLabelDimensions orientation=HORIZONTAL:', () => {
 })
 
 const executeGetLabelDimensionsInBrowser = async ({ page, input }) => {
-  function thisIsExecutedRemotely (input) {
-    return window.renderSingleLineLabel(Object.assign(input, { rotation: 0 })) // renderSingleLineLabel is defined in renderLabels.html
+  function thisIsExecutedRemotely (input, orientation) {
+    return window.renderSingleLineLabel(Object.assign(input, { orientation })) // renderSingleLineLabel is defined in renderLabels.html
   }
 
-  return page.evaluate(thisIsExecutedRemotely, input)
+  return page.evaluate(thisIsExecutedRemotely, input, HORIZONTAL)
 }
 
 const executeReset = async ({ page }) => {

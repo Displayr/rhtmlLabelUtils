@@ -1,4 +1,5 @@
 const { getSingleLineLabelDimensions } = require('./getSingleLineLabelDimensions')
+const { orientation: { HORIZONTAL }} = require('./enums')
 
 const isNull = value => value === null
 
@@ -7,7 +8,7 @@ const wordTokenizer = inputString => {
   return inputString2.split(' ').map(token => token.trim()).filter(token => token.length)
 }
 
-function splitIntoLinesByWord ({ parentContainer, text, fontSize = 12, fontFamily = 'sans-serif', fontWeight = 'normal', maxWidth, maxHeight, maxLines = null, rotation = 0 } = {}) {
+function splitIntoLinesByWord ({ parentContainer, text, fontSize = 12, fontFamily = 'sans-serif', fontWeight = 'normal', maxWidth, maxHeight, maxLines = null, orientation = HORIZONTAL } = {}) {
   let tokens = wordTokenizer(text)
   return _splitIntoLines({
     parentContainer,
@@ -20,11 +21,11 @@ function splitIntoLinesByWord ({ parentContainer, text, fontSize = 12, fontFamil
     maxLines,
     tokens,
     joinCharacter: ' ',
-    rotation
+    orientation,
   })
 }
 
-function splitIntoLinesByCharacter ({ parentContainer, text, fontSize = 12, fontFamily = 'sans-serif', fontWeight = 'normal', maxWidth, maxHeight, maxLines = null, rotation = 0 } = {}) {
+function splitIntoLinesByCharacter ({ parentContainer, text, fontSize = 12, fontFamily = 'sans-serif', fontWeight = 'normal', maxWidth, maxHeight, maxLines = null, orientation = HORIZONTAL } = {}) {
   let tokens = text.split('')
   return _splitIntoLines({
     parentContainer,
@@ -37,11 +38,11 @@ function splitIntoLinesByCharacter ({ parentContainer, text, fontSize = 12, font
     maxLines,
     tokens,
     joinCharacter: '',
-    rotation
+    orientation,
   })
 }
 
-function _splitIntoLines ({ parentContainer, text, fontSize = 12, fontFamily = 'sans-serif', fontWeight = 'normal', maxWidth = null, maxHeight = null, maxLines = null, tokens, joinCharacter, rotation } = {}) {
+function _splitIntoLines ({ parentContainer, text, fontSize = 12, fontFamily = 'sans-serif', fontWeight = 'normal', maxWidth = null, maxHeight = null, maxLines = null, tokens, joinCharacter, orientation } = {}) {
   if (text.length === 0) { return [text] }
   let currentLine = []
   let lines = []
@@ -49,7 +50,7 @@ function _splitIntoLines ({ parentContainer, text, fontSize = 12, fontFamily = '
   const truncationString = '...'
   let token = null
 
-  const horizontalAndOnFirstLine = () => rotation === 0 && lines.length === 0
+  const horizontalAndOnFirstLine = () => orientation === HORIZONTAL && lines.length === 0
   const widthExceeded = (width) => !isNull(maxWidth) && width > maxWidth
   const heightExceeded = (height) => !isNull(maxHeight) && height > maxHeight
   const getDimensionsFromString = (string) => getSingleLineLabelDimensions({
@@ -58,7 +59,7 @@ function _splitIntoLines ({ parentContainer, text, fontSize = 12, fontFamily = '
     fontSize,
     fontFamily,
     fontWeight,
-    rotation
+    orientation
   })
   const getDimensionsFromArray = (tokenArray) => getDimensionsFromString(tokenArray.join(joinCharacter))
   const getDimensions = (arrayOrString) => (Array.isArray(arrayOrString))

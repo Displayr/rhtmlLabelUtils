@@ -1,18 +1,17 @@
-const { orientation: { HORIZONTAL, TOP_TO_BOTTOM, BOTTOM_TO_TOP } } = require('./enums')
+const { orientation: { HORIZONTAL } } = require('./enums')
+const orientationToRotation = require('../utils/orientationToRotation')
 
 let uniqueId = 0
 function getUniqueId () { return uniqueId++ }
 
 const DEBUG = false
-const SUPPORTED_ROTATIONS = [0,90,-90]
-function getSingleLineLabelDimensions ({ parentContainer, text, fontSize: fontSizeStringOrNumber = '16px', fontFamily = 'Times', fontWeight = 'normal', rotation: rotationStringOrNumber = 0 }) {
+function getSingleLineLabelDimensions ({ parentContainer, text, fontSize: fontSizeStringOrNumber = '16px', fontFamily = 'Times', fontWeight = 'normal', orientation = HORIZONTAL }) {
   const uniqueId = `tempLabel-${getUniqueId()}`
 
   if (!`${fontSizeStringOrNumber}`.match(/^[\d]+(px)?$/)) { throw new Error(`Invalid fontSize '${fontSizeStringOrNumber}'. Must be numeric with optional trailing 'px'. (em|rem) not supported`)}
   const fontSize = (`${fontSizeStringOrNumber}`.indexOf('px') === -1) ? `${fontSizeStringOrNumber}px` : `${fontSizeStringOrNumber}`
 
-  const rotation = parseInt(rotationStringOrNumber)
-  if (!SUPPORTED_ROTATIONS.includes(rotation)) { throw new Error(`Rotation ${rotationStringOrNumber} not supported`) }
+  const rotation = orientationToRotation(orientation)
 
   const container = parentContainer.append('g')
     .attr('class', 'tempLabel')

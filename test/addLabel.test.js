@@ -16,13 +16,9 @@ const {
   snapshotExtraPadding
 } = require('./getLabelDimensions.settings')
 
-const { enums } = require('../src')
-
 jest.setTimeout(timeout)
 const toMatchImageSnapshot = configureToMatchImageSnapshot(imageSnapshotSettings)
 expect.extend({ toMatchImageSnapshot })
-
-const ECHO_COMPUTED_DIMENSIONS = false // NB useful for seeding text expectations
 
 describe('getHorizontalLabelDimensions output and snapshot verification:', () => {
   let browser
@@ -48,25 +44,25 @@ describe('getHorizontalLabelDimensions output and snapshot verification:', () =>
     await executeReset({ page })
 
     const bounds = { width: 100, height: 100 }
+    const offset = { x: 0, y: 0 }
 
-    function thisIsExecutedRemotely (originOffset, bounds) {
+    function thisIsExecutedRemotely (offset, bounds) {
       return window.callAddLabel({
         text: 'foo banana stana rama hama cooko cabana rama stama lorem',
-        offset: originOffset,
+        offset,
         bounds,
-        orientation: 'HORIZONTAL',
       })
     }
 
-    await page.evaluate(thisIsExecutedRemotely, originOffset, bounds)
+    await page.evaluate(thisIsExecutedRemotely, offset, bounds)
 
     let svgCanvas = await page.$(canvasSelector)
     let image = await svgCanvas.screenshot({
       clip: {
         x: svgBoundingBox.x + originOffset - snapshotExtraPadding,
         y: svgBoundingBox.y + originOffset - snapshotExtraPadding,
-        width: Math.max(100, bounds.width + 2 * snapshotExtraPadding),
-        height: Math.max(20, bounds.height + 2 * snapshotExtraPadding),
+        width: Math.max(100, offset.x + bounds.width + 2 * snapshotExtraPadding),
+        height: Math.max(20, offset.y + bounds.height + 2 * snapshotExtraPadding),
       }
     })
 
