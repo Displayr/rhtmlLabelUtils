@@ -60,13 +60,15 @@ On the why a bit:
 * () add html/svg class specification / inspect current classes
 * () In several places we still just assume height = fontSize 
 * () split snapshots into multiple directories
+* horizontal label center vertical align does not work
+* vertical label alignments are not implemented
 
 Test Notes
 ---
 
 * AddLabel:
     * horizontal
-        * 9 alignment combos - with wrapping
+        * 9 alignment combos - with wrapping (DONE)
         * basic fontSize / Weight / Family / color tests
         * respects bounds
         * respects maxLines

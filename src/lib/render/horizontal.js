@@ -70,7 +70,7 @@ module.exports = ({
       })
       break
     case enums.verticalAlignment.BOTTOM:
-      lines.reverse().each((line, i) => {
+      lines.reverse().forEach((line, i) => {
         textSelection.append('tspan')
           .style('dominant-baseline', 'text-after-edge')
           .attr('x', 0)
