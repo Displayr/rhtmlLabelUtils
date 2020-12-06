@@ -10,8 +10,6 @@ const {
   ...restOfSettings
 } = require('./getLabelDimensions.settings')
 
-const asyncForEach =
-
 jest.setTimeout(timeout)
 expect.extend({ toMatchImageSnapshot: configureToMatchImageSnapshot(imageSnapshotSettings) })
 

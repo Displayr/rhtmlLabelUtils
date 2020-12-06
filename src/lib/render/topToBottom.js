@@ -1,7 +1,5 @@
 const enums = require('../enums')
 
-// TODO : respect vertical and horizontal alignment
-
 module.exports = ({
   parentContainer,
   lines,
@@ -57,7 +55,7 @@ module.exports = ({
           .style('text-anchor', 'end')
         break
       default:
-        throw new Error(`unknown horizontal alignment: '${horizontalAlignment}'`)
+        throw new Error(`unknown vertical alignment: '${verticalAlignment}'`)
     }
   })
 }

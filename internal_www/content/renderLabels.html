@@ -73,7 +73,6 @@
     }
 
     window.callAddLabel = (input) => {
-      console.log(JSON.stringify(input))
       const parentContainer = d3.select('#svg-canvas')
       const container = parentContainer.append('g')
         .attr('transform', `translate(${origin.x + input.offset.x},${origin.y + input.offset.y})`)
