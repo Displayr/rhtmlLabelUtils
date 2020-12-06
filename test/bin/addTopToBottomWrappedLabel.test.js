@@ -20,7 +20,7 @@ const {
   verticalAlignment: { TOP, CENTER: V_CENTER, BOTTOM },
 } = enums
 
-describe('addHorizontalWrappedLabel:', () => {
+describe('addTopToBottomWrappedLabel:', () => {
   let testScope = {}
   beforeAll(beforeAllFixtureFactory(testScope))
   afterAll(afterAllFixtureFactory(testScope))
@@ -45,7 +45,7 @@ describe('addHorizontalWrappedLabel:', () => {
     await asyncForEach(combinations, async ({horizontalAlignment, offset, verticalAlignment}, index) => {
       function thisIsExecutedRemotely(config) { return window.callAddLabel(config) }
       await page.evaluate(thisIsExecutedRemotely, {
-        orientation: enums.orientation.HORIZONTAL,
+        orientation: enums.orientation.TOP_TO_BOTTOM,
         text: '1 22 333 4444 55555 6666666 55555 4444 333 22 1',
         offset,
         bounds,
@@ -66,6 +66,6 @@ describe('addHorizontalWrappedLabel:', () => {
       }
     })
 
-    expect(image).toMatchImageSnapshot({ customSnapshotIdentifier: 'horizontal-wrapped-label-alignment-combos' })
+    expect(image).toMatchImageSnapshot({ customSnapshotIdentifier: 'top-to-bottom-wrapped-label-alignment-combos' })
   })
 })

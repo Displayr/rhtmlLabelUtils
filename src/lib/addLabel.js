@@ -21,7 +21,6 @@ const addLabel = ({
   innerLinePadding = 1,
 }) => {
   // TODO INPUT VALIDATION
-
   const wrapFunction = (wrap === enums.wrap.WORD)
     ? splitIntoLinesByWord
     : splitIntoLinesByCharacter

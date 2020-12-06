@@ -3,15 +3,8 @@
 <head>
 </head>
 <body>
-  <h2>To run a test in dev tools execute one of the following:</h2>
-  <ul>
-    <li><strong>horizontal single line label:</strong> renderSingleLineLabel({text: "Label 1",fontSize:"20", fontFamily:"Arial",fontWeight:"lighter",orientation:"HORIZONTAL", offset:{x:0,y:50}})</li>
-    <li><strong>vertical single line label:</strong> renderSingleLineLabel({text: "Label 1",fontSize:"20", fontFamily:"Arial",fontWeight:"lighter",orientation:"TOP_TO_BOTTOM", offset:{x:0,y:50}})</li>
-    <li><strong>render horizontal wrapped label</strong> callAddLabel({text: "lorem ipsum blah blah foo banana rama", offset:{x:50,y:50}, bounds:{width:100,height:100}})</li>
-    <li><strong>render vertical wrapped label</strong> callAddLabel({ orientation: "TOP_TO_BOTTOM", text: "lorem ipsum blah blah foo banana rama", offset:{x:50,y:50}, bounds:{width:100,height:100}})</li>
-  </ul>
+  <h2>Test description</h2>
 
-  <pre>resetSvgContents()</pre>
   <svg class="canvas" id="svg-canvas" width="4000" height="4000"></svg>
   <script src="/external/d3.js"></script>
   <script src="/js/addLabelUtilsToWindow.js"></script>
@@ -73,7 +66,6 @@
     }
 
     window.callAddLabel = (input) => {
-      console.log(JSON.stringify(input))
       const parentContainer = d3.select('#svg-canvas')
       const container = parentContainer.append('g')
         .attr('transform', `translate(${origin.x + input.offset.x},${origin.y + input.offset.y})`)
@@ -92,6 +84,20 @@
 
       return output
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      window.callAddLabel({"orientation":"TOP_TO_BOTTOM","text":"H:L V:T 22 333 4444","offset":{"x":0,"y":0},"bounds":{"width":100,"height":100},"horizontalAlignment":"LEFT","verticalAlignment":"TOP"})
+      window.callAddLabel({"orientation":"TOP_TO_BOTTOM","text":"H:L V:M 22 333 4444","offset":{"x":0,"y":120},"bounds":{"width":100,"height":100},"horizontalAlignment":"LEFT","verticalAlignment":"CENTER"})
+      window.callAddLabel({"orientation":"TOP_TO_BOTTOM","text":"H:L V:B 22 333 4444","offset":{"x":0,"y":240},"bounds":{"width":100,"height":100},"horizontalAlignment":"LEFT","verticalAlignment":"BOTTOM"})
+      window.callAddLabel({"orientation":"TOP_TO_BOTTOM","text":"H:C V:T 22 333 4444","offset":{"x":120,"y":0},"bounds":{"width":100,"height":100},"horizontalAlignment":"CENTER","verticalAlignment":"TOP"})
+      window.callAddLabel({"orientation":"TOP_TO_BOTTOM","text":"H:C V:M 22 333 4444","offset":{"x":120,"y":120},"bounds":{"width":100,"height":100},"horizontalAlignment":"CENTER","verticalAlignment":"CENTER"})
+      window.callAddLabel({"orientation":"TOP_TO_BOTTOM","text":"H:C V:B 22 333 4444","offset":{"x":120,"y":240},"bounds":{"width":100,"height":100},"horizontalAlignment":"CENTER","verticalAlignment":"BOTTOM"})
+      window.callAddLabel({"orientation":"TOP_TO_BOTTOM","text":"H:R V:T 22 333 4444","offset":{"x":240,"y":0},"bounds":{"width":100,"height":100},"horizontalAlignment":"RIGHT","verticalAlignment":"TOP"})
+      window.callAddLabel({"orientation":"TOP_TO_BOTTOM","text":"H:R V:M 22 333 4444","offset":{"x":240,"y":120},"bounds":{"width":100,"height":100},"horizontalAlignment":"RIGHT","verticalAlignment":"CENTER"})
+      window.callAddLabel({"orientation":"TOP_TO_BOTTOM","text":"H:R V:B 22 333 4444","offset":{"x":240,"y":240},"bounds":{"width":100,"height":100},"horizontalAlignment":"RIGHT","verticalAlignment":"BOTTOM"})
+    })
   </script>
 </body>
 </html>
+
+
