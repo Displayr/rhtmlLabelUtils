@@ -8,7 +8,8 @@
     "test": "jest test/bin",
     "dist": "rm -r dist/; mkdir -p dist; babel --ignore node_modules,dist,examples ./src/ -d dist",
     "compile_internal": "browserify -d test/interface/addLabelUtilsToWindow.js -o browser/js/addLabelUtilsToWindow.js -t [ babelify --presets [ @babel/preset-env ] ]",
-    "serve": "rm -rf browser && mkdir -p browser && cp -r internal_www/ browser && cp -r node_modules/d3/dist/d3.js browser/external && npm run compile_internal && serve browser -l 9000"
+    "serve": "rm -rf browser && mkdir -p browser && cp -r internal_www/ browser && cp -r node_modules/d3/dist/d3.js browser/external && npm run compile_internal && serve browser -l 9000",
+    "watch": "npm-watch"
   },
   "repository": {
     "type": "git",
@@ -31,9 +32,13 @@
     "jest": "^26.6.3",
     "jest-image-snapshot": "^4.2.0",
     "lodash": "^4.17.15",
+    "npm-watch": "^0.7.0",
     "puppeteer": "^5.5.0",
     "regenerator-runtime": "^0.13.7",
     "serve": "^11.3.2"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "watch": {
+    "compile_internal": "src/**/*.js"
+  }
 }
