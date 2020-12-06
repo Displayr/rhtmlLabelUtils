@@ -39,6 +39,7 @@
   },
   "dependencies": {},
   "watch": {
-    "compile_internal": "src/**/*.js"
+    "compile_internal": "src/**/*.js",
+    "serve": "internal_www/**/*.*"
   }
 }
