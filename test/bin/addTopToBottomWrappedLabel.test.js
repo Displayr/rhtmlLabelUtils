@@ -11,7 +11,8 @@ const {
     snapshotExtraPadding,
   },
   pageInteractions: { executeReset },
-  testSetup: { beforeAllFixtureFactory, afterAllFixtureFactory }
+  testSetup: { beforeAllFixtureFactory, afterAllFixtureFactory },
+  getTestGroupName,
 } = require('../utils')
 
 const enums = require('../../src/lib/enums')
@@ -20,9 +21,10 @@ const {
   verticalAlignment: { TOP, CENTER: V_CENTER, BOTTOM },
 } = enums
 
-describe('addTopToBottomWrappedLabel:', () => {
+const testGroup = getTestGroupName(__filename)
+describe(`${testGroup}:`, () => {
   let testScope = {}
-  beforeAll(beforeAllFixtureFactory(testScope))
+  beforeAll(beforeAllFixtureFactory(testScope, testGroup))
   afterAll(afterAllFixtureFactory(testScope))
 
   test('alignment combinations', async () => {

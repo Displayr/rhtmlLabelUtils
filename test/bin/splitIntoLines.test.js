@@ -3,7 +3,8 @@
 
 const {
   pageInteractions: { executeReset },
-  testSetup: { beforeAllFixtureFactory, afterAllFixtureFactory }
+  testSetup: { beforeAllFixtureFactory, afterAllFixtureFactory },
+  getTestGroupName,
 } = require('../utils')
 
 const enums = require('../../src/lib/enums')

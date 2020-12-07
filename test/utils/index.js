@@ -1,7 +1,7 @@
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
-const { configureToMatchImageSnapshot } = require('jest-image-snapshot')
+const _ = require('lodash')
 const puppeteer = require('puppeteer')
 
 const {
@@ -11,9 +11,9 @@ const {
 } = require('./getLabelDimensions.settings')
 
 jest.setTimeout(timeout)
-expect.extend({ toMatchImageSnapshot: configureToMatchImageSnapshot(imageSnapshotSettings) })
 
 module.exports = {
+  getTestGroupName: filePath => _.last(filePath.split('/')).replace(/\.test\.js$/, ''),
   settings: {
     timeout,
     imageSnapshotSettings,

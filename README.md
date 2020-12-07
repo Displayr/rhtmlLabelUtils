@@ -48,6 +48,7 @@ On the why a bit:
 * often you need to first specify preferred dimensions - which requires some analysis but not actual rendering. The the callee does some layout maths, then you get called with "this is the space you actually get", now render. So its important to not only expose render methods, but also the methods that can calculate expected dimensions.
 
 # TODO
+* horizontal label center vertical align does not work
 * (DEFER/WILLNOTDO) maybe drop the dependency on D3 ?  
 * (DEFER/WILLNOTDO) travis ci
 * (IN PROGRESS) support rotated label calculation and testing
@@ -55,13 +56,11 @@ On the why a bit:
 * (IN PROGRESS) port something that will provide rendering instead of just maths
 * (DEFER) echo settings in snapshots
 * (DEFER) get list of font families to support based on what is available in Displayr UI
-* () setup watch on live server
-* () support onclick
+* (IN PROGRESS) setup watch on live server
+* (DEFER) support onclick
 * () add html/svg class specification / inspect current classes
 * () In several places we still just assume height = fontSize 
 * () split snapshots into multiple directories
-* horizontal label center vertical align does not work
-* vertical label alignments are not implemented
 
 Test Notes
 ---

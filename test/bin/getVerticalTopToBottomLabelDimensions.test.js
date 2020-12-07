@@ -9,16 +9,18 @@ const {
     snapshotExtraPadding,
   },
   pageInteractions: { executeReset },
-  testSetup: { beforeAllFixtureFactory, afterAllFixtureFactory }
+  testSetup: { beforeAllFixtureFactory, afterAllFixtureFactory },
+  getTestGroupName,
 } = require('../utils')
 
 const { orientation: { TOP_TO_BOTTOM } } = require('../../src/lib/enums')
 const testCases = require('../data/singleLine.testCases')
 const tests = testCases.map(testConfig => [`topToBottom-${testConfig.name}`, testConfig]) // map to expected jest test.each format
 
-describe('getSingleLineLabelDimensions orientation=TOP_TO_BOTTOM:', () => {
+const testGroup = getTestGroupName(__filename)
+describe(`${testGroup}:`, () => {
   let testScope = {}
-  beforeAll(beforeAllFixtureFactory(testScope))
+  beforeAll(beforeAllFixtureFactory(testScope, testGroup))
   afterAll(afterAllFixtureFactory(testScope))
 
   test.each(tests)(`%#: %s`, async (testName, testConfig) => {
