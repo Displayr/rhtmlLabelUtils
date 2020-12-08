@@ -15,7 +15,7 @@ module.exports = ({
   const extraSpace = height -
     (fontSize * lines.length + innerLinePadding * (lines.length - 1))
 
-  const textYOffset = (verticalAlignment === 'center' && extraSpace > 0)
+  const textYOffset = (verticalAlignment === enums.verticalAlignment.CENTER && extraSpace > 0)
     ? extraSpace / 2
     : 0
 

@@ -72,6 +72,12 @@
       return output
     }
 
+    window.executeSplintIntoLinesByCharacter = (input) => {
+      const parentContainer = d3.select('#svg-canvas')
+      const output = window.labelUtils.splitIntoLinesByCharacter({ parentContainer, ...input })
+      return output
+    }
+
     window.callAddLabel = (input) => {
       const parentContainer = d3.select('#svg-canvas')
       const container = parentContainer.append('g')

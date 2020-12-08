@@ -9,7 +9,7 @@ const {
 
 const enums = require('../../src/lib/enums')
 
-const testCases = [
+const splitByWordsTestCases = [
   {
     text: 'line 1 of output line 2 of output',
     maxWidth: 100,
@@ -54,12 +54,12 @@ const testCases = [
     name: 'basic vertical BOTTOM_TO_TOP one line with truncations',
   },
   {
-    text: 'line 1 of output line 2 of output',
-    maxHeight: 100,
+    text: 'abcdefghijklmnopqrstuvwxyaabcdefghijklmnopqrstuvwxya',
+    maxWidth: 100,
     maxLines: 1,
-    orientation: enums.orientation.BOTTOM_TO_TOP,
-    expected: ['line 1 of output...'],
-    name: 'bug: single large word causes wrap',
+    orientation: enums.orientation.HORIZONTAL,
+    expected: ['abcdefghijklmnopqrstuvwxyaabcdefghijklmnopqrstuvwxya'],
+    name: 'BUG: single large word causes label to go out of bounds',
   },
 
   // inner line padding respected
@@ -68,6 +68,7 @@ const testCases = [
     maxWidth: 100,
     maxHeight: 100,
     innerLinePadding: 50,
+    orientation: enums.orientation.HORIZONTAL,
     expected: ['line 1 of output', 'line 2 of output...'],
     name: 'inner line padding causes second line to get dropped',
   },
@@ -78,8 +79,28 @@ const testCases = [
     maxWidth: 300,
     maxHeight: 100,
     fontSize: 40,
+    orientation: enums.orientation.HORIZONTAL,
     expected: ['line 1 of output', 'line 2 of output...'],
     name: 'inner line padding causes second line to get dropped',
+  },
+
+  // font weight respected
+  {
+    text: 'line 1 of output',
+    maxWidth: 79,
+    maxLines: 1,
+    orientation: enums.orientation.HORIZONTAL,
+    expected: ['line 1 of output'],
+    name: 'font weight baseline : with normal weight it fits',
+  },
+  {
+    text: 'line 1 of output',
+    maxWidth: 79,
+    maxLines: 1,
+    fontWeight: 'bold',
+    orientation: enums.orientation.HORIZONTAL,
+    expected: ['line 1 of...'],
+    name: 'font weight : with bold weight it must truncate',
   },
 
   // realistic outputs
@@ -96,12 +117,30 @@ const testCases = [
   },
 ]
 
+// skip orientation tests as we tested them on spoklitByWord and we know/assume the implementations are the same
+const splitByCharacterTestCases = [
+  {
+    text: 'line 1 of output line 2 of output',
+    maxWidth: 100,
+    expected: ['line 1 of output lin', 'e 2 of output'],
+    name: 'basic horizontal split into two lines',
+  },
+  {
+    text: 'abcdefghijklmnopqrstuvwxyaabcdefghijklmnopqrstuvwxya',
+    maxWidth: 100,
+    maxLines: 1,
+    orientation: enums.orientation.HORIZONTAL,
+    expected: ['abcdefghijklmno...'],
+    name: 'single large word is correctly truncated',
+  },
+]
+
 describe('splitIntoLinesByWord:', () => {
   let testScope = {}
   beforeAll(beforeAllFixtureFactory(testScope))
   afterAll(afterAllFixtureFactory(testScope))
 
-  const tests = testCases.map((testConfig, i) => [`splitIntoLinesByWord-${testConfig.name || i}`, testConfig]) // map to expected jest test.each format
+  const tests = splitByWordsTestCases.map((testConfig, i) => [`splitIntoLinesByWord-${testConfig.name || i}`, testConfig]) // map to expected jest test.each format
   test.each(tests)(`%#: %s`, async (testName, testConfig) => {
       const { page } = testScope
       await executeReset({ page })
@@ -110,5 +149,22 @@ describe('splitIntoLinesByWord:', () => {
       }
       const output = await page.evaluate(thisIsExecutedRemotely, testConfig)
       expect(output).toEqual(testConfig.expected)
+  })
+})
+
+describe('splitIntoLinesByCharacter:', () => {
+  let testScope = {}
+  beforeAll(beforeAllFixtureFactory(testScope))
+  afterAll(afterAllFixtureFactory(testScope))
+
+  const tests = splitByCharacterTestCases.map((testConfig, i) => [`splitByCharacterTestCases-${testConfig.name || i}`, testConfig]) // map to expected jest test.each format
+  test.each(tests)(`%#: %s`, async (testName, testConfig) => {
+    const { page } = testScope
+    await executeReset({ page })
+    function thisIsExecutedRemotely (testConfig) {
+      return window.executeSplintIntoLinesByCharacter(testConfig)
+    }
+    const output = await page.evaluate(thisIsExecutedRemotely, testConfig)
+    expect(output).toEqual(testConfig.expected)
   })
 })

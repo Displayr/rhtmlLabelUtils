@@ -3,67 +3,13 @@
 <head>
 </head>
 <body>
-  <h2>Test description</h2>
+  <h2>This is not currently snapshotted, just for debug purposes. The snapshot is generated programatically in the test/bin/X files and this html just matches the test cases. Not ideal</h2>
 
   <svg class="canvas" id="svg-canvas" width="4000" height="4000"></svg>
   <script src="/external/d3.js"></script>
   <script src="/js/addLabelUtilsToWindow.js"></script>
   <script type="text/javascript">
     const origin = { x: 50, y: 50 }
-
-    window.resetSvgContents = () => {
-      d3.select('#svg-canvas').selectAll("*").remove();
-    }
-
-    window.renderSingleLineLabel = (input) => {
-      const parentContainer = d3.select('#svg-canvas')
-      const output = window.labelUtils.getSingleLineLabelDimensions({ parentContainer, ...input })
-
-      const container = parentContainer.append('g')
-        .attr('transform', `translate(${origin.x + input.offset.x},${origin.y + input.offset.y})`)
-
-      const orientationTransformsLookup = {
-        [window.labelUtils.enums.orientation.HORIZONTAL]: '',
-        [window.labelUtils.enums.orientation.TOP_TO_BOTTOM]: `translate(${output.width},0),rotate(90)`,
-        [window.labelUtils.enums.orientation.BOTTOM_TO_TOP]: `translate(0,${output.height}),rotate(-90)`
-      }
-
-      const textElement = container.append('text')
-        .attr('class', `test-label`)
-        .attr('x', 0)
-        .attr('y', 0)
-        .attr('dy', 0)
-        .attr('dominant-baseline', 'text-before-edge')
-        .attr('transform', orientationTransformsLookup[input.orientation])
-
-      textElement.append('tspan')
-        .attr('x', 0)
-        .attr('y', 0)
-        .style('font-size', input.fontSize)
-        .style('font-family', input.fontFamily)
-        .style('font-weight', input.fontWeight)
-        .style('dominant-baseline', 'text-before-edge')
-        .text(input.text)
-
-      parentContainer
-        .append('rect')
-        .attr('class', `test-box`)
-        .attr('x', origin.x + input.offset.x)
-        .attr('y', origin.y + input.offset.y)
-        .attr('width', output.width)
-        .attr('height', output.height)
-        .attr('fill', 'none')
-        .attr('stroke', 'red')
-        .attr('stroke-width', 0.5)
-
-      return output
-    }
-
-    window.executeSplintIntoLinesByWord = (input) => {
-      const parentContainer = d3.select('#svg-canvas')
-      const output = window.labelUtils.splitIntoLinesByWord({ parentContainer, ...input })
-      return output
-    }
 
     window.callAddLabel = (input) => {
       const parentContainer = d3.select('#svg-canvas')
@@ -99,5 +45,3 @@
   </script>
 </body>
 </html>
-
-

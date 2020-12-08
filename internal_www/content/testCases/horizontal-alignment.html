@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+</head>
+<body>
+  <h2>This is not currently snapshotted, just for debug purposes. The snapshot is generated programatically in the test/bin/X files and this html just matches the test cases. Not ideal</h2>
+
+  <svg class="canvas" id="svg-canvas" width="4000" height="4000"></svg>
+  <script src="/external/d3.js"></script>
+  <script src="/js/addLabelUtilsToWindow.js"></script>
+  <script type="text/javascript">
+    const origin = { x: 50, y: 50 }
+
+    window.callAddLabel = (input) => {
+      const parentContainer = d3.select('#svg-canvas')
+      const container = parentContainer.append('g')
+        .attr('transform', `translate(${origin.x + input.offset.x},${origin.y + input.offset.y})`)
+      const output = window.labelUtils.addLabel({ parentContainer: container, ...input })
+
+      container
+        .append('rect')
+        .attr('class', `test-box`)
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', input.bounds.width)
+        .attr('height', input.bounds.height)
+        .attr('fill', 'none')
+        .attr('stroke', 'red')
+        .attr('stroke-width', 0.5)
+
+      return output
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":0,"y":0},"bounds":{"width":100,"height":100},"horizontalAlignment":"LEFT","verticalAlignment":"TOP"})
+      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":0,"y":120},"bounds":{"width":100,"height":100},"horizontalAlignment":"LEFT","verticalAlignment":"CENTER"})
+      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":0,"y":240},"bounds":{"width":100,"height":100},"horizontalAlignment":"LEFT","verticalAlignment":"BOTTOM"})
+      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":120,"y":0},"bounds":{"width":100,"height":100},"horizontalAlignment":"CENTER","verticalAlignment":"TOP"})
+      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":120,"y":120},"bounds":{"width":100,"height":100},"horizontalAlignment":"CENTER","verticalAlignment":"CENTER"})
+      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":120,"y":240},"bounds":{"width":100,"height":100},"horizontalAlignment":"CENTER","verticalAlignment":"BOTTOM"})
+      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":240,"y":0},"bounds":{"width":100,"height":100},"horizontalAlignment":"RIGHT","verticalAlignment":"TOP"})
+      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":240,"y":120},"bounds":{"width":100,"height":100},"horizontalAlignment":"RIGHT","verticalAlignment":"CENTER"})
+      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":240,"y":240},"bounds":{"width":100,"height":100},"horizontalAlignment":"RIGHT","verticalAlignment":"BOTTOM"})
+    })
+  </script>
+</body>
+</html>
+
+

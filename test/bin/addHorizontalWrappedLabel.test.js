@@ -45,7 +45,7 @@ describe(`${testGroup}:`, () => {
       .value()
 
     await asyncForEach(combinations, async ({horizontalAlignment, offset, verticalAlignment}, index) => {
-      function thisIsExecutedRemotely(config) { return window.callAddLabel(config) }
+      function thisIsExecutedRemotely(config) { console.log(JSON.stringify(config)); return window.callAddLabel(config) }
       await page.evaluate(thisIsExecutedRemotely, {
         orientation: enums.orientation.HORIZONTAL,
         text: '1 22 333 4444 55555 6666666 55555 4444 333 22 1',
