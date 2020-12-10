@@ -1,15 +1,20 @@
 const { orientation: { HORIZONTAL } } = require('./enums')
 const orientationToRotation = require('../utils/orientationToRotation')
-
+const validateFontSizeAndConvertNumeric = require('../utils/validateFontSizeAndConvertNumeric')
 let uniqueId = 0
 function getUniqueId () { return uniqueId++ }
 
 const DEBUG = false
-function getSingleLineLabelDimensions ({ parentContainer, text, fontSize: fontSizeStringOrNumber = '16px', fontFamily = 'Times', fontWeight = 'normal', orientation = HORIZONTAL }) {
+function getSingleLineLabelDimensions ({
+  parentContainer,
+  text,
+  fontSize: fontSizeStringOrNumber = '12',
+  fontFamily = 'sans-serif',
+  fontWeight = 'normal',
+  orientation = HORIZONTAL
+}) {
   const uniqueId = `tempLabel-${getUniqueId()}`
-
-  if (!`${fontSizeStringOrNumber}`.match(/^[\d]+(px)?$/)) { throw new Error(`Invalid fontSize '${fontSizeStringOrNumber}'. Must be numeric with optional trailing 'px'. (em|rem) not supported`)}
-  const fontSize = (`${fontSizeStringOrNumber}`.indexOf('px') === -1) ? `${fontSizeStringOrNumber}px` : `${fontSizeStringOrNumber}`
+  const fontSize = validateFontSizeAndConvertNumeric(fontSizeStringOrNumber)
 
   const rotation = orientationToRotation(orientation)
 
@@ -26,7 +31,7 @@ function getSingleLineLabelDimensions ({ parentContainer, text, fontSize: fontSi
   textElement.append('tspan')
     .attr('x', 0)
     .attr('y', 0)
-    .style('font-size', fontSize)
+    .style('font-size', `${fontSize}px`)
     .style('font-family', fontFamily)
     .style('font-weight', fontWeight)
     .style('dominant-baseline', 'text-before-edge')

@@ -1,7 +1,8 @@
 const { getSingleLineLabelDimensions } = require('./getSingleLineLabelDimensions')
 const { orientation: { HORIZONTAL } } = require('./enums')
+  const validateFontSizeAndConvertNumeric = require('../utils/validateFontSizeAndConvertNumeric')
 
-// TODO this file needs a cleanup, but first it needs some test coverage
+// TODO the _splitIntoLines needs a cleanup, but first it needs some test coverage
 // I have not really touched this file (yet) since extracting it into labelUtils repo
 
 const wordTokenizer = inputString => inputString
@@ -45,7 +46,7 @@ const translateToHorizontal = ({ orientation, maxWidth, maxHeight }) => {
 
 function _splitIntoLines ({
   parentContainer,
-  fontSize = 12,
+  fontSize: fontSizeStringOrNumber = 12,
   fontFamily = 'sans-serif',
   fontWeight = 'normal',
   maxWidth: untranslatedMaxWidth = null,
@@ -56,6 +57,8 @@ function _splitIntoLines ({
   orientation: untranslatedOrientation = HORIZONTAL,
   innerLinePadding = 1,
 } = {}) {
+  const fontSize = validateFontSizeAndConvertNumeric(fontSizeStringOrNumber)
+
   let currentLine = []
   let lines = []
   let totalHeight = 0

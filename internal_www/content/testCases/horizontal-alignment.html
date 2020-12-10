@@ -32,15 +32,36 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":0,"y":0},"bounds":{"width":100,"height":100},"horizontalAlignment":"LEFT","verticalAlignment":"TOP"})
-      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":0,"y":120},"bounds":{"width":100,"height":100},"horizontalAlignment":"LEFT","verticalAlignment":"CENTER"})
-      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":0,"y":240},"bounds":{"width":100,"height":100},"horizontalAlignment":"LEFT","verticalAlignment":"BOTTOM"})
-      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":120,"y":0},"bounds":{"width":100,"height":100},"horizontalAlignment":"CENTER","verticalAlignment":"TOP"})
-      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":120,"y":120},"bounds":{"width":100,"height":100},"horizontalAlignment":"CENTER","verticalAlignment":"CENTER"})
-      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":120,"y":240},"bounds":{"width":100,"height":100},"horizontalAlignment":"CENTER","verticalAlignment":"BOTTOM"})
-      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":240,"y":0},"bounds":{"width":100,"height":100},"horizontalAlignment":"RIGHT","verticalAlignment":"TOP"})
-      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":240,"y":120},"bounds":{"width":100,"height":100},"horizontalAlignment":"RIGHT","verticalAlignment":"CENTER"})
-      window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":240,"y":240},"bounds":{"width":100,"height":100},"horizontalAlignment":"RIGHT","verticalAlignment":"BOTTOM"})
+      // window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":0,"y":0},"bounds":{"width":100,"height":100},"horizontalAlignment":"LEFT","verticalAlignment":"TOP"})
+      // window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":0,"y":120},"bounds":{"width":100,"height":100},"horizontalAlignment":"LEFT","verticalAlignment":"CENTER"})
+      // window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":0,"y":240},"bounds":{"width":100,"height":100},"horizontalAlignment":"LEFT","verticalAlignment":"BOTTOM"})
+      // window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":120,"y":0},"bounds":{"width":100,"height":100},"horizontalAlignment":"CENTER","verticalAlignment":"TOP"})
+      // window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":120,"y":120},"bounds":{"width":100,"height":100},"horizontalAlignment":"CENTER","verticalAlignment":"CENTER"})
+      // window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":120,"y":240},"bounds":{"width":100,"height":100},"horizontalAlignment":"CENTER","verticalAlignment":"BOTTOM"})
+      // window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":240,"y":0},"bounds":{"width":100,"height":100},"horizontalAlignment":"RIGHT","verticalAlignment":"TOP"})
+      // window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":240,"y":120},"bounds":{"width":100,"height":100},"horizontalAlignment":"RIGHT","verticalAlignment":"CENTER"})
+      // window.callAddLabel({"orientation":"HORIZONTAL","text":"1 22 333 4444 55555 6666666 55555 4444 333 22 1","offset":{"x":240,"y":240},"bounds":{"width":100,"height":100},"horizontalAlignment":"RIGHT","verticalAlignment":"BOTTOM"})
+
+
+      window.callAddLabel({
+        "orientation": "HORIZONTAL",
+        "horizontalAlignment":"LEFT",
+        "text": "1 22 333 11111111 1 22 333 111111111",
+        "offset": {"x": 0, "y": 360},
+        "bounds": {"width": 100, "height": 100},
+      })
+
+      window.callAddLabel({
+        "orientation": "HORIZONTAL",
+        "horizontalAlignment":"LEFT",
+        "fontSize": "24",
+        "fontColor": "red",
+        "fontWeight": "bold",
+        "fontFamily": "fantasy",
+        "text": "1 22 333 44 1 22 333 111111111",
+        "offset": {"x": 0, "y": 0},
+        "bounds": {"width": 100, "height": 100},
+      })
     })
   </script>
 </body>

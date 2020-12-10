@@ -1,5 +1,6 @@
 const { splitIntoLinesByCharacter, splitIntoLinesByWord } = require('./splitIntoLines')
 const enums = require('./enums')
+const validateFontSizeAndConvertNumeric = require('../utils/validateFontSizeAndConvertNumeric')
 
 const horizontalRenderer = require('./render/horizontal')
 const topToBottomRenderer = require('./render/topToBottom')
@@ -8,7 +9,7 @@ const bottomToTopRenderer = require('./render/bottomToTop')
 const addLabel = ({
   parentContainer,
   text = 'test label',
-  fontSize = 12,
+  fontSize: fontSizeStringOrNumber = 12,
   fontFamily = 'sans-serif',
   fontWeight = 'normal',
   fontColor = '#000000',
@@ -20,6 +21,8 @@ const addLabel = ({
   horizontalAlignment = enums.verticalAlignment.CENTER,
   innerLinePadding = 1,
 }) => {
+  const fontSize = validateFontSizeAndConvertNumeric(fontSizeStringOrNumber)
+
   // TODO INPUT VALIDATION
   const wrapFunction = (wrap === enums.wrap.WORD)
     ? splitIntoLinesByWord
@@ -35,7 +38,7 @@ const addLabel = ({
     maxHeight: bounds.height,
     maxLines,
     orientation,
-    innerLinePadding,
+    innerLinePadding: parseFloat(innerLinePadding),
   })
 
   const renderer = getRenderer(orientation)
@@ -49,7 +52,7 @@ const addLabel = ({
     bounds,
     verticalAlignment,
     horizontalAlignment,
-    innerLinePadding,
+    innerLinePadding: parseFloat(innerLinePadding),
   })
 }
 
