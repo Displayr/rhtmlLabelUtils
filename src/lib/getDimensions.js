@@ -26,7 +26,7 @@ const getDimensions = ({
     fontFamily,
     fontWeight,
     maxWidth,
-    maxWidth,
+    maxHeight,
     maxLines,
     orientation,
     wrap,
