@@ -61,4 +61,6 @@ module.exports = ({
         throw new Error(`unknown vertical alignment: '${verticalAlignment}'`)
     }
   })
+
+  return parentContainer.select('text')
 }

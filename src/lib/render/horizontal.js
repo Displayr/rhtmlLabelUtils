@@ -81,4 +81,6 @@ module.exports = ({
     default:
       throw new Error(`unknown vertical alignment: '${verticalAlignment}'`)
   }
+
+  return textSelection
 }

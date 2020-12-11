@@ -1,6 +1,6 @@
 const getSingleLineLabelDimensions = require('./getSingleLineLabelDimensions')
 const { orientation: { HORIZONTAL }, wrap } = require('./enums')
-  const validateFontSizeAndConvertNumeric = require('../utils/validateFontSizeAndConvertNumeric')
+const validateFontSizeAndConvertNumeric = require('../utils/validateFontSizeAndConvertNumeric')
 
 // TODO the _splitIntoLines needs a cleanup, but first it needs some test coverage
 // I have not really touched this file (yet) since extracting it into labelUtils repo

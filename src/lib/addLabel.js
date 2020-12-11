@@ -39,7 +39,7 @@ const addLabel = ({
   })
 
   const renderer = getRenderer(orientation)
-  renderer({
+  return renderer({
     parentContainer,
     lines,
     fontSize,

@@ -5,6 +5,7 @@ let uniqueId = 0
 function getUniqueId () { return uniqueId++ }
 
 const DEBUG = false
+
 function getSingleLineLabelDimensions ({
   parentContainer,
   text,
