@@ -59,4 +59,4 @@ function getSingleLineLabelDimensions ({
   return { width, height }
 }
 
-module.exports = { getSingleLineLabelDimensions }
+module.exports = getSingleLineLabelDimensions

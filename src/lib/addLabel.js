@@ -1,4 +1,4 @@
-const { splitIntoLinesByCharacter, splitIntoLinesByWord } = require('./splitIntoLines')
+const splitIntoLines = require('./splitIntoLines')
 const enums = require('./enums')
 const validateFontSizeAndConvertNumeric = require('../utils/validateFontSizeAndConvertNumeric')
 
@@ -18,18 +18,15 @@ const addLabel = ({
   orientation = enums.orientation.HORIZONTAL,
   wrap = enums.wrap.WORD,
   verticalAlignment = enums.verticalAlignment.TOP,
-  horizontalAlignment = enums.verticalAlignment.CENTER,
+  horizontalAlignment = enums.horizontalAlignment.CENTER,
   innerLinePadding = 1,
 }) => {
+  // TODO INPUT VALIDATION
   const fontSize = validateFontSizeAndConvertNumeric(fontSizeStringOrNumber)
 
-  // TODO INPUT VALIDATION
-  const wrapFunction = (wrap === enums.wrap.WORD)
-    ? splitIntoLinesByWord
-    : splitIntoLinesByCharacter
-
-  const lines = wrapFunction({
+  const lines = splitIntoLines({
     parentContainer,
+    wrap,
     text,
     fontSize,
     fontFamily,
@@ -65,6 +62,4 @@ const getRenderer = orientation => {
   }
 }
 
-module.exports = {
-  addLabel,
-}
+module.exports = addLabel

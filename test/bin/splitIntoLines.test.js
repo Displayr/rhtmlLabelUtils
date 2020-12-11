@@ -1,6 +1,8 @@
 /* global jest */
 /* global expect */
 
+const _ = require('lodash')
+
 const {
   pageInteractions: { executeReset },
   testSetup: { beforeAllFixtureFactory, afterAllFixtureFactory },
@@ -145,9 +147,9 @@ describe('splitIntoLinesByWord:', () => {
       const { page } = testScope
       await executeReset({ page })
       function thisIsExecutedRemotely (testConfig) {
-        return window.executeSplintIntoLinesByWord(testConfig)
+        return window.executeSplintIntoLines(testConfig)
       }
-      const output = await page.evaluate(thisIsExecutedRemotely, testConfig)
+      const output = await page.evaluate(thisIsExecutedRemotely, _.merge({}, testConfig, { wrap: enums.wrap.WORD }))
       expect(output).toEqual(testConfig.expected)
   })
 })
@@ -162,9 +164,9 @@ describe('splitIntoLinesByCharacter:', () => {
     const { page } = testScope
     await executeReset({ page })
     function thisIsExecutedRemotely (testConfig) {
-      return window.executeSplintIntoLinesByCharacter(testConfig)
+      return window.executeSplintIntoLines(testConfig)
     }
-    const output = await page.evaluate(thisIsExecutedRemotely, testConfig)
+    const output = await page.evaluate(thisIsExecutedRemotely, _.merge({}, testConfig, { wrap: enums.wrap.CHARACTER }))
     expect(output).toEqual(testConfig.expected)
   })
 })

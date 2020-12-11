@@ -1,9 +1,10 @@
-const { getSingleLineLabelDimensions } = require('./getSingleLineLabelDimensions')
-const { orientation: { HORIZONTAL } } = require('./enums')
+const getSingleLineLabelDimensions = require('./getSingleLineLabelDimensions')
+const { orientation: { HORIZONTAL }, wrap } = require('./enums')
   const validateFontSizeAndConvertNumeric = require('../utils/validateFontSizeAndConvertNumeric')
 
 // TODO the _splitIntoLines needs a cleanup, but first it needs some test coverage
 // I have not really touched this file (yet) since extracting it into labelUtils repo
+
 
 const wordTokenizer = inputString => inputString
   .replace(/<br>/g, ' <br> ')
@@ -11,24 +12,13 @@ const wordTokenizer = inputString => inputString
   .map(token => token.trim())
   .filter(token => token.length)
 
-function splitIntoLinesByWord ({ text = '', ...rest } = {}) {
+const splitIntoLines = ({ text = '', wrap: wrapChoice, ...rest } = {}) => {
   if (text.length === 0) { return [text] }
-  let tokens = wordTokenizer(text)
-  return _splitIntoLines({
-    tokens,
-    joinCharacter: ' ',
-    ...rest,
-  })
-}
-
-function splitIntoLinesByCharacter ({ text = '', ...rest } = {}) {
-  if (text.length === 0) { return [text] }
-  let tokens = text.split('')
-  return _splitIntoLines({
-    tokens,
-    joinCharacter: '',
-    ...rest,
-  })
+  let tokens = (wrapChoice === wrap.WORD)
+    ? wordTokenizer(text)
+    : text.split('')
+  let joinCharacter = (wrapChoice === wrap.WORD) ? ' ' : ''
+  return _splitIntoLines({ tokens, joinCharacter, ...rest})
 }
 
 // NB not sure if this will work. Depends if font rendering is same size wise horizontal vs vertical
@@ -150,7 +140,4 @@ function _splitIntoLines ({
     : lines
 }
 
-module.exports = {
-  splitIntoLinesByWord,
-  splitIntoLinesByCharacter
-}
+module.exports = splitIntoLines

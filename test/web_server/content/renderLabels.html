@@ -66,17 +66,12 @@
       return output
     }
 
-    window.executeSplintIntoLinesByWord = (input) => {
+    window.executeSplintIntoLines = (input) => {
       const parentContainer = d3.select('#svg-canvas')
-      const output = window.labelUtils.splitIntoLinesByWord({ parentContainer, ...input })
+      const output = window.labelUtils.splitIntoLines({ parentContainer, ...input })
       return output
     }
 
-    window.executeSplintIntoLinesByCharacter = (input) => {
-      const parentContainer = d3.select('#svg-canvas')
-      const output = window.labelUtils.splitIntoLinesByCharacter({ parentContainer, ...input })
-      return output
-    }
 
     window.callAddLabel = (input) => {
       const parentContainer = d3.select('#svg-canvas')
