@@ -2,6 +2,8 @@ const orientationOptions = {
   HORIZONTAL: 'HORIZONTAL',
   TOP_TO_BOTTOM: 'TOP_TO_BOTTOM',
   BOTTOM_TO_TOP: 'BOTTOM_TO_TOP',
+  NORTH_EAST: 'NORTH_EAST',
+  SOUTH_EAST: 'SOUTH_EAST',
 }
 
 const wrapOptions = {

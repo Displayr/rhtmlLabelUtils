@@ -38,7 +38,7 @@ const addTestcasesToPageAndTakeSnapshot = async ({ testCases, customSnapshotIden
   await executeReset({page})
 
   await asyncForEach(testCases, async (testCase, index) => {
-    function thisIsExecutedRemotely(config) { return window.callAddLabel(config) }
+    function thisIsExecutedRemotely(config) { return window.testFixture.addLabel(config) }
     await page.evaluate(thisIsExecutedRemotely, testCase)
   })
 

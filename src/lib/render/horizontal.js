@@ -2,7 +2,7 @@ const enums = require('../enums')
 
 module.exports = ({
   parentContainer,
-  lines,
+  linesWithInfo,
   fontSize = 12,
   fontFamily = 'sans-serif',
   fontWeight = 'normal',
@@ -13,7 +13,7 @@ module.exports = ({
   innerLinePadding = 1,
 }) => {
   // TODO do not use fontSize as a proxy for line height
-  const extraSpace = height - (fontSize * lines.length + innerLinePadding * (lines.length - 1))
+  const extraSpace = height - (fontSize * linesWithInfo.length + innerLinePadding * (linesWithInfo.length - 1))
 
   const textYOffset = (verticalAlignment === enums.verticalAlignment.CENTER && extraSpace > 0)
     ? extraSpace / 2
@@ -24,7 +24,7 @@ module.exports = ({
     .attr('y', 0)
     .attr('dy', 0)
     .style('font-family', fontFamily)
-    .style('font-size', fontSize)
+    .style('font-size', `${fontSize}px`)
     .style('font-weight', fontWeight)
     .style('fill', fontColor)
 
@@ -53,30 +53,30 @@ module.exports = ({
 
   switch (verticalAlignment) {
     case enums.verticalAlignment.TOP:
-      lines.forEach((line, i) => {
+      linesWithInfo.forEach(({ text }, i) => {
         textSelection.append('tspan')
           .style('dominant-baseline', 'text-before-edge')
           .attr('x', 0)
           .attr('y', i * (fontSize + innerLinePadding))
-          .text(line)
+          .text(text)
       })
       break
     case enums.verticalAlignment.CENTER:
-      lines.forEach((line, i) => {
+      linesWithInfo.forEach(({ text }, i) => {
         textSelection.append('tspan')
           .style('dominant-baseline', 'central')
           .attr('x', 0)
           .attr('y', useBoundsIfFirstRowAndFontTooLarge(i) / 2 + i * (fontSize + innerLinePadding))
-          .text(line)
+          .text(text)
       })
       break
     case enums.verticalAlignment.BOTTOM:
-      lines.reverse().forEach((line, i) => {
+      linesWithInfo.reverse().forEach(({ text }, i) => {
         textSelection.append('tspan')
           .style('dominant-baseline', 'text-after-edge')
           .attr('x', 0)
           .attr('y', height - i * (fontSize + innerLinePadding))
-          .text(line)
+          .text(text)
       })
       break
     default:

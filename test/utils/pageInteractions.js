@@ -5,7 +5,7 @@ const {
 
 const executeReset = async ({ page }) => {
   function thisIsExecutedRemotely () {
-    return window.resetSvgContents() // resetSvgContents is defined in renderLabels.html
+    return window.testFixture.resetSvgContents() // resetSvgContents is defined in renderLabels.html
   }
 
   return page.evaluate(thisIsExecutedRemotely)

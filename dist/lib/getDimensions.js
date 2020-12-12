@@ -6,7 +6,8 @@ var enums = require('./enums');
 
 var getSingleLineLabelDimensions = require('./getSingleLineLabelDimensions');
 
-var splitIntoLines = require('./splitIntoLines');
+var _require = require('./splitIntoLines'),
+    splitIntoLines = _require.splitIntoLines;
 
 var validateFontSizeAndConvertNumeric = require('../utils/validateFontSizeAndConvertNumeric');
 

@@ -8,12 +8,15 @@ var enums = require('./lib/enums');
 
 var getSingleLineLabelDimensions = require('./lib/getSingleLineLabelDimensions');
 
-var splitIntoLines = require('./lib/splitIntoLines');
+var _require = require('./lib/splitIntoLines'),
+    splitIntoLines = _require.splitIntoLines,
+    splitIntoLinesWithInfo = _require.splitIntoLinesWithInfo;
 
 module.exports = {
   addLabel: addLabel,
   enums: enums,
   getDimensions: getDimensions,
   getSingleLineLabelDimensions: getSingleLineLabelDimensions,
-  splitIntoLines: splitIntoLines
+  splitIntoLines: splitIntoLines,
+  splitIntoLinesWithInfo: splitIntoLinesWithInfo
 };

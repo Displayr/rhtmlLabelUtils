@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const enums = require('./enums')
 const getSingleLineLabelDimensions = require('./getSingleLineLabelDimensions')
-const splitIntoLines = require('./splitIntoLines')
+const { splitIntoLines } = require('./splitIntoLines')
 const validateFontSizeAndConvertNumeric = require('../utils/validateFontSizeAndConvertNumeric')
 
 const getDimensions = ({

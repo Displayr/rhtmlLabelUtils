@@ -2,7 +2,7 @@ const enums = require('../enums')
 
 module.exports = ({
   parentContainer,
-  lines,
+  linesWithInfo,
   fontSize = 12,
   fontFamily = 'sans-serif',
   fontWeight = 'normal',
@@ -13,12 +13,12 @@ module.exports = ({
   innerLinePadding = 1,
 }) => {
   // TODO do not use fontSize as a proxy for rotated line width
-  const consumedWidth = fontSize * lines.length + innerLinePadding * (lines.length - 1)
+  const consumedWidth = fontSize * linesWithInfo.length + innerLinePadding * (linesWithInfo.length - 1)
   let initialXOffset = 0
   if (horizontalAlignment === enums.horizontalAlignment.CENTER) { initialXOffset = (width - consumedWidth) / 2 }
   if (horizontalAlignment === enums.horizontalAlignment.RIGHT) { initialXOffset = width - consumedWidth }
 
-  lines.forEach((line, i) => {
+  linesWithInfo.forEach(({ text }, i) => {
     const container = parentContainer.append('g')
       .attr('transform', `translate(${initialXOffset + i * (fontSize + innerLinePadding)},0)`)
 
@@ -33,11 +33,11 @@ module.exports = ({
     textElement.append('tspan')
       .attr('x', 0)
       .attr('y', 0)
-      .style('font-size', fontSize)
+      .style('font-size', `${fontSize}px`)
       .style('font-family', fontFamily)
       .style('font-weight', fontWeight)
       .style('dominant-baseline', 'text-before-edge')
-      .text(line)
+      .text(text)
 
     switch (verticalAlignment) {
       case enums.verticalAlignment.TOP:

@@ -1,10 +1,8 @@
-const { orientation: { HORIZONTAL } } = require('./enums')
+const { orientation: { HORIZONTAL, TOP_TO_BOTTOM, BOTTOM_TO_TOP, NORTH_EAST, SOUTH_EAST } } = require('./enums')
 const orientationToRotation = require('../utils/orientationToRotation')
 const validateFontSizeAndConvertNumeric = require('../utils/validateFontSizeAndConvertNumeric')
 let uniqueId = 0
 function getUniqueId () { return uniqueId++ }
-
-const DEBUG = false
 
 function getSingleLineLabelDimensions ({
   parentContainer,
@@ -38,26 +36,30 @@ function getSingleLineLabelDimensions ({
     .style('dominant-baseline', 'text-before-edge')
     .text(text)
 
-  const { x, y, width, height } = textElement.node().getBoundingClientRect()
-
-  if (DEBUG) {
-    const computedWidth = textElement.node().getComputedTextLength()
-
-    if (DEBUG && Math.abs(computedWidth - width) > 1) {
-      console.warn(`getSingleLineLabelDimensions('${text}'): discrepancy between getBbox().width and getComputedTextLength (bb:${width}, comp:${computedWidth}`)
-    }
-
-    if (DEBUG && x !== 0) {
-      console.warn(`getSingleLineLabelDimensions('${text}'): got non zero x offset: ${x}`)
-    }
-
-    if (DEBUG && y !== 0) {
-      console.warn(`getSingleLineLabelDimensions('${text}'): got non zero y offset: ${y}`)
-    }
-  }
+  const { width, height } = textElement.node().getBoundingClientRect()
+  let { xOffset, yOffset } = getOffsets({ orientation ,width, height, fontSize })
+  let transform = getTransform({ rotation, xOffset, yOffset })
 
   parentContainer.select(`#${uniqueId}`).remove()
-  return { width, height }
+  return { width, height, xOffset, yOffset, transform }
 }
+
+const toRadians = degrees => degrees * (Math.PI / 180)
+
+const getOffsets = ({ orientation, width, height, fontSize }) => {
+  switch(orientation) {
+    case HORIZONTAL: return { xOffset: 0, yOffset: 0 }
+    case TOP_TO_BOTTOM: return { xOffset: width, yOffset: 0 }
+    case BOTTOM_TO_TOP: return { xOffset: 0, yOffset: height }
+    // TODO Dont assume font size is height in SOUTH_EAST AND NORTH_EAST
+    case NORTH_EAST: return { xOffset: 0, yOffset: height - Math.sin(toRadians(45)) * fontSize}
+    case SOUTH_EAST: return { xOffset: Math.sin(toRadians(45)) * fontSize, yOffset: 0 }
+    default: throw new Error(`Invalid orientation '${orientation}'`)
+  }
+}
+
+const getTransform = ({ rotation, xOffset, yOffset }) => (rotation === 0)
+  ? ''
+  : `translate(${xOffset},${yOffset}),rotate(${rotation})`
 
 module.exports = getSingleLineLabelDimensions

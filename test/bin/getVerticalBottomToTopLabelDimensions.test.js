@@ -61,7 +61,7 @@ describe(`${testGroup}:`, () => {
 
 const executeGetLabelDimensionsInBrowser = async ({ page, input }) => {
   function thisIsExecutedRemotely (input, orientation) {
-    return window.renderSingleLineLabel(Object.assign(input, { orientation })) // renderSingleLineLabel is defined in renderLabels.html
+    return window.testFixture.getSingleLineLabelDimensions(Object.assign(input, { orientation })) // renderSingleLineLabel is defined in renderLabels.html
   }
   return page.evaluate(thisIsExecutedRemotely, input, BOTTOM_TO_TOP)
 }

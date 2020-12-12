@@ -23,5 +23,5 @@ module.exports = {
   originOffset: 50, // this needs to match up with the origin in renderLabels.html
   snapshotExtraPadding: 10,
   canvasSelector: '#svg-canvas',
-  testUrl: 'http://localhost:9000/content/renderLabels.html'
+  testUrl: `http://localhost:${process.env.PORT || 9000}/content/renderLabels.html`
 }

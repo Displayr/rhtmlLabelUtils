@@ -4,7 +4,7 @@ var enums = require('../enums');
 
 module.exports = function (_ref) {
   var parentContainer = _ref.parentContainer,
-      lines = _ref.lines,
+      linesWithInfo = _ref.linesWithInfo,
       _ref$fontSize = _ref.fontSize,
       fontSize = _ref$fontSize === void 0 ? 12 : _ref$fontSize,
       _ref$fontFamily = _ref.fontFamily,
@@ -27,9 +27,9 @@ module.exports = function (_ref) {
       _ref$innerLinePadding = _ref.innerLinePadding,
       innerLinePadding = _ref$innerLinePadding === void 0 ? 1 : _ref$innerLinePadding;
   // TODO do not use fontSize as a proxy for line height
-  var extraSpace = height - (fontSize * lines.length + innerLinePadding * (lines.length - 1));
+  var extraSpace = height - (fontSize * linesWithInfo.length + innerLinePadding * (linesWithInfo.length - 1));
   var textYOffset = verticalAlignment === enums.verticalAlignment.CENTER && extraSpace > 0 ? extraSpace / 2 : 0;
-  var textSelection = parentContainer.append('text').attr('x', 0).attr('y', 0).attr('dy', 0).style('font-family', fontFamily).style('font-size', fontSize).style('font-weight', fontWeight).style('fill', fontColor);
+  var textSelection = parentContainer.append('text').attr('x', 0).attr('y', 0).attr('dy', 0).style('font-family', fontFamily).style('font-size', "".concat(fontSize, "px")).style('font-weight', fontWeight).style('fill', fontColor);
 
   switch (horizontalAlignment) {
     case enums.horizontalAlignment.LEFT:
@@ -55,20 +55,23 @@ module.exports = function (_ref) {
 
   switch (verticalAlignment) {
     case enums.verticalAlignment.TOP:
-      lines.forEach(function (line, i) {
-        textSelection.append('tspan').style('dominant-baseline', 'text-before-edge').attr('x', 0).attr('y', i * (fontSize + innerLinePadding)).text(line);
+      linesWithInfo.forEach(function (_ref2, i) {
+        var text = _ref2.text;
+        textSelection.append('tspan').style('dominant-baseline', 'text-before-edge').attr('x', 0).attr('y', i * (fontSize + innerLinePadding)).text(text);
       });
       break;
 
     case enums.verticalAlignment.CENTER:
-      lines.forEach(function (line, i) {
-        textSelection.append('tspan').style('dominant-baseline', 'central').attr('x', 0).attr('y', useBoundsIfFirstRowAndFontTooLarge(i) / 2 + i * (fontSize + innerLinePadding)).text(line);
+      linesWithInfo.forEach(function (_ref3, i) {
+        var text = _ref3.text;
+        textSelection.append('tspan').style('dominant-baseline', 'central').attr('x', 0).attr('y', useBoundsIfFirstRowAndFontTooLarge(i) / 2 + i * (fontSize + innerLinePadding)).text(text);
       });
       break;
 
     case enums.verticalAlignment.BOTTOM:
-      lines.reverse().forEach(function (line, i) {
-        textSelection.append('tspan').style('dominant-baseline', 'text-after-edge').attr('x', 0).attr('y', height - i * (fontSize + innerLinePadding)).text(line);
+      linesWithInfo.reverse().forEach(function (_ref4, i) {
+        var text = _ref4.text;
+        textSelection.append('tspan').style('dominant-baseline', 'text-after-edge').attr('x', 0).attr('y', height - i * (fontSize + innerLinePadding)).text(text);
       });
       break;
 

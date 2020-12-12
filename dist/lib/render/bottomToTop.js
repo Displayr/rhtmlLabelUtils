@@ -4,7 +4,7 @@ var enums = require('../enums');
 
 module.exports = function (_ref) {
   var parentContainer = _ref.parentContainer,
-      lines = _ref.lines,
+      linesWithInfo = _ref.linesWithInfo,
       _ref$fontSize = _ref.fontSize,
       fontSize = _ref$fontSize === void 0 ? 12 : _ref$fontSize,
       _ref$fontFamily = _ref.fontFamily,
@@ -27,7 +27,7 @@ module.exports = function (_ref) {
       _ref$innerLinePadding = _ref.innerLinePadding,
       innerLinePadding = _ref$innerLinePadding === void 0 ? 1 : _ref$innerLinePadding;
   // TODO do not use fontSize as a proxy for rotated line width
-  var consumedWidth = fontSize * lines.length + innerLinePadding * (lines.length - 1);
+  var consumedWidth = fontSize * linesWithInfo.length + innerLinePadding * (linesWithInfo.length - 1);
   var initialXOffset = 0;
 
   if (horizontalAlignment === enums.horizontalAlignment.CENTER) {
@@ -38,10 +38,11 @@ module.exports = function (_ref) {
     initialXOffset = width - consumedWidth;
   }
 
-  lines.forEach(function (line, i) {
+  linesWithInfo.forEach(function (_ref2, i) {
+    var text = _ref2.text;
     var container = parentContainer.append('g').attr('transform', "translate(".concat(initialXOffset + i * (fontSize + innerLinePadding), ",0)"));
     var textElement = container.append('text').attr('class', "test-label").attr('x', 0).attr('y', 0).attr('dy', 0).attr('dominant-baseline', 'text-before-edge').style('fill', fontColor);
-    textElement.append('tspan').attr('x', 0).attr('y', 0).style('font-size', fontSize).style('font-family', fontFamily).style('font-weight', fontWeight).style('dominant-baseline', 'text-before-edge').text(line);
+    textElement.append('tspan').attr('x', 0).attr('y', 0).style('font-size', "".concat(fontSize, "px")).style('font-family', fontFamily).style('font-weight', fontWeight).style('dominant-baseline', 'text-before-edge').text(text);
 
     switch (verticalAlignment) {
       case enums.verticalAlignment.TOP:
