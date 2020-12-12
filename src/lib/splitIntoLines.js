@@ -61,10 +61,11 @@ function _splitIntoLines ({
     maxHeight: untranslatedMaxHeight
   })
 
+  const toHundredth = value => Math.round(value * 100) / 100
   const isNull = value => value === null
   const horizontalAndOnFirstLine = () => orientation === HORIZONTAL && lines.length === 0
-  const widthExceeded = width => !isNull(maxWidth) && width > maxWidth
-  const heightExceeded = height => !isNull(maxHeight) && height > maxHeight
+  const widthExceeded = width => !isNull(maxWidth) && toHundredth(width) > toHundredth(maxWidth)
+  const heightExceeded = height => !isNull(maxHeight) && toHundredth(height) > toHundredth(maxHeight)
   const getDimensionsFromString = text => getSingleLineLabelDimensions({ parentContainer, text, fontSize, fontFamily, fontWeight, orientation })
   const getDimensionsFromArray = (tokenArray) => getDimensionsFromString(tokenArray.join(joinCharacter))
   const getDimensions = arrayOrString => (Array.isArray(arrayOrString))
