@@ -1,7 +1,7 @@
 {
   "name": "rhtmlLabelUtils",
   "private": "true",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "label utilities and shared label components for rhtml packages",
   "main": "dist/index.js",
   "scripts": {
@@ -35,7 +35,7 @@
     "d3": "^5.16.0",
     "jest": "^26.6.3",
     "jest-image-snapshot": "^4.2.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.20",
     "npm-watch": "^0.7.0",
     "puppeteer": "^5.5.0",
     "regenerator-runtime": "^0.13.7",
@@ -43,8 +43,15 @@
   },
   "dependencies": {},
   "watch": {
-    "compile_internal": ["src/**/*.js","test/interface/*.js","test/data/*.*"],
-    "compile_usage": ["src/**/*.js","test/interface/*.js"],
+    "compile_internal": [
+      "src/**/*.js",
+      "test/interface/*.js",
+      "test/data/*.*"
+    ],
+    "compile_usage": [
+      "src/**/*.js",
+      "test/interface/*.js"
+    ],
     "serve": "test/web_server/**/*.*"
   }
 }
