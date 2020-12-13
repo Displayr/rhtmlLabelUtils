@@ -27,4 +27,16 @@ module.exports = {
     fontVariations: require('./fontVariationsBase.testCases')
       .map(testCase => _.merge({}, testCase, { orientation: enums.orientation.BOTTOM_TO_TOP })),
   },
+  northEastOrientation: {
+    alignment: require('./alignmentBase.testCases')
+      .map(testCase => _.merge({}, testCase, { orientation: enums.orientation.NORTH_EAST, text: 'short string', maxLines: 1 })),
+    fontVariations: require('./fontVariationsBase.testCases')
+      .map(testCase => _.merge({}, testCase, { orientation: enums.orientation.NORTH_EAST, maxLines: 1 })),
+  },
+  southEastOrientation: {
+    alignment: require('./alignmentBase.testCases')
+      .map(testCase => _.merge({}, testCase, { orientation: enums.orientation.SOUTH_EAST, text: 'short string', maxLines: 1 })),
+    fontVariations: require('./fontVariationsBase.testCases')
+      .map(testCase => _.merge({}, testCase, { orientation: enums.orientation.SOUTH_EAST, maxLines: 1 })),
+  },
 }

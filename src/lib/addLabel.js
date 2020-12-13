@@ -1,10 +1,12 @@
-const splitIntoLines = require('./splitIntoLines')
+const { splitIntoLinesWithInfo } = require('./splitIntoLines')
 const enums = require('./enums')
 const validateFontSizeAndConvertNumeric = require('../utils/validateFontSizeAndConvertNumeric')
 
 const horizontalRenderer = require('./render/horizontal')
 const topToBottomRenderer = require('./render/topToBottom')
 const bottomToTopRenderer = require('./render/bottomToTop')
+const northEastRenderer = require('./render/northEast')
+const southEastRenderer = require('./render/southEast')
 
 const addLabel = ({
   parentContainer,
@@ -24,7 +26,7 @@ const addLabel = ({
   // TODO INPUT VALIDATION
   const fontSize = validateFontSizeAndConvertNumeric(fontSizeStringOrNumber)
 
-  const lines = splitIntoLines({
+  const linesWithInfo = splitIntoLinesWithInfo({
     parentContainer,
     wrap,
     text,
@@ -41,7 +43,7 @@ const addLabel = ({
   const renderer = getRenderer(orientation)
   return renderer({
     parentContainer,
-    lines,
+    linesWithInfo,
     fontSize,
     fontFamily,
     fontWeight,
@@ -58,6 +60,8 @@ const getRenderer = orientation => {
     case enums.orientation.HORIZONTAL: return horizontalRenderer
     case enums.orientation.TOP_TO_BOTTOM: return topToBottomRenderer
     case enums.orientation.BOTTOM_TO_TOP: return bottomToTopRenderer
+    case enums.orientation.NORTH_EAST: return northEastRenderer
+    case enums.orientation.SOUTH_EAST: return southEastRenderer
     default: throw new Error(`unknown orientation: '${orientation}'`)
   }
 }

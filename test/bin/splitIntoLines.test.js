@@ -147,7 +147,7 @@ describe('splitIntoLinesByWord:', () => {
       const { page } = testScope
       await executeReset({ page })
       function thisIsExecutedRemotely (testConfig) {
-        return window.executeSplintIntoLines(testConfig)
+        return window.testFixture.splitIntoLines(testConfig)
       }
       const output = await page.evaluate(thisIsExecutedRemotely, _.merge({}, testConfig, { wrap: enums.wrap.WORD }))
       expect(output).toEqual(testConfig.expected)
@@ -164,7 +164,7 @@ describe('splitIntoLinesByCharacter:', () => {
     const { page } = testScope
     await executeReset({ page })
     function thisIsExecutedRemotely (testConfig) {
-      return window.executeSplintIntoLines(testConfig)
+      return window.testFixture.splitIntoLines(testConfig)
     }
     const output = await page.evaluate(thisIsExecutedRemotely, _.merge({}, testConfig, { wrap: enums.wrap.CHARACTER }))
     expect(output).toEqual(testConfig.expected)

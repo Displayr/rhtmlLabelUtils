@@ -8,8 +8,12 @@
     "test": "jest test/bin",
     "dist": "rm -r dist/; mkdir -p dist; babel --ignore node_modules,dist,examples ./src/ -d dist",
     "compile_internal": "browserify -d test/interface/addLabelUtilsToWindow.js -o browser/js/addLabelUtilsToWindow.js -t [ babelify --presets [ @babel/preset-env ] ]",
+    "compile_usage": "browserify -d test/interface/usage.js -o browser/js/usage.js -t [ babelify --presets [ @babel/preset-env ] ]",
     "serve": "rm -rf browser && mkdir -p browser && cp -r test/web_server/ browser && cp -r node_modules/d3/dist/d3.js browser/external && npm run compile_internal && serve browser -l 9000",
-    "watch": "npm-watch"
+    "watch": "npm-watch",
+    "gatherDiffs": "rm -rf .tmp/diffs; mkdir -p .tmp/diffs/; for I in `find test/snapshots -type d -name __diff_output__`; do cp $I/* .tmp/diffs/ 2> /dev/null; done; true",
+    "macOpenDiffs": "open .tmp/diffs",
+    "seeDiffs": "npm run gatherDiffs; npm run macOpenDiffs"
   },
   "repository": {
     "type": "git",
@@ -40,6 +44,7 @@
   "dependencies": {},
   "watch": {
     "compile_internal": ["src/**/*.js","test/interface/*.js","test/data/*.*"],
+    "compile_usage": ["src/**/*.js","test/interface/*.js"],
     "serve": "test/web_server/**/*.*"
   }
 }

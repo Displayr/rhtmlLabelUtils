@@ -1,6 +1,7 @@
 "use strict";
 
-var splitIntoLines = require('./splitIntoLines');
+var _require = require('./splitIntoLines'),
+    splitIntoLinesWithInfo = _require.splitIntoLinesWithInfo;
 
 var enums = require('./enums');
 
@@ -11,6 +12,10 @@ var horizontalRenderer = require('./render/horizontal');
 var topToBottomRenderer = require('./render/topToBottom');
 
 var bottomToTopRenderer = require('./render/bottomToTop');
+
+var northEastRenderer = require('./render/northEast');
+
+var southEastRenderer = require('./render/southEast');
 
 var addLabel = function addLabel(_ref) {
   var parentContainer = _ref.parentContainer,
@@ -43,7 +48,7 @@ var addLabel = function addLabel(_ref) {
       innerLinePadding = _ref$innerLinePadding === void 0 ? 1 : _ref$innerLinePadding;
   // TODO INPUT VALIDATION
   var fontSize = validateFontSizeAndConvertNumeric(fontSizeStringOrNumber);
-  var lines = splitIntoLines({
+  var linesWithInfo = splitIntoLinesWithInfo({
     parentContainer: parentContainer,
     wrap: wrap,
     text: text,
@@ -59,7 +64,7 @@ var addLabel = function addLabel(_ref) {
   var renderer = getRenderer(orientation);
   return renderer({
     parentContainer: parentContainer,
-    lines: lines,
+    linesWithInfo: linesWithInfo,
     fontSize: fontSize,
     fontFamily: fontFamily,
     fontWeight: fontWeight,
@@ -81,6 +86,12 @@ var getRenderer = function getRenderer(orientation) {
 
     case enums.orientation.BOTTOM_TO_TOP:
       return bottomToTopRenderer;
+
+    case enums.orientation.NORTH_EAST:
+      return northEastRenderer;
+
+    case enums.orientation.SOUTH_EAST:
+      return southEastRenderer;
 
     default:
       throw new Error("unknown orientation: '".concat(orientation, "'"));

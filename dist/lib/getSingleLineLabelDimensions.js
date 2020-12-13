@@ -1,7 +1,12 @@
 "use strict";
 
 var _require = require('./enums'),
-    HORIZONTAL = _require.orientation.HORIZONTAL;
+    _require$orientation = _require.orientation,
+    HORIZONTAL = _require$orientation.HORIZONTAL,
+    TOP_TO_BOTTOM = _require$orientation.TOP_TO_BOTTOM,
+    BOTTOM_TO_TOP = _require$orientation.BOTTOM_TO_TOP,
+    NORTH_EAST = _require$orientation.NORTH_EAST,
+    SOUTH_EAST = _require$orientation.SOUTH_EAST;
 
 var orientationToRotation = require('../utils/orientationToRotation');
 
@@ -12,8 +17,6 @@ var uniqueId = 0;
 function getUniqueId() {
   return uniqueId++;
 }
-
-var DEBUG = false;
 
 function getSingleLineLabelDimensions(_ref) {
   var parentContainer = _ref.parentContainer,
@@ -34,32 +37,85 @@ function getSingleLineLabelDimensions(_ref) {
   textElement.append('tspan').attr('x', 0).attr('y', 0).style('font-size', "".concat(fontSize, "px")).style('font-family', fontFamily).style('font-weight', fontWeight).style('dominant-baseline', 'text-before-edge').text(text);
 
   var _textElement$node$get = textElement.node().getBoundingClientRect(),
-      x = _textElement$node$get.x,
-      y = _textElement$node$get.y,
       width = _textElement$node$get.width,
       height = _textElement$node$get.height;
 
-  if (DEBUG) {
-    var computedWidth = textElement.node().getComputedTextLength();
+  var _getOffsets = getOffsets({
+    orientation: orientation,
+    width: width,
+    height: height,
+    fontSize: fontSize
+  }),
+      xOffset = _getOffsets.xOffset,
+      yOffset = _getOffsets.yOffset;
 
-    if (DEBUG && Math.abs(computedWidth - width) > 1) {
-      console.warn("getSingleLineLabelDimensions('".concat(text, "'): discrepancy between getBbox().width and getComputedTextLength (bb:").concat(width, ", comp:").concat(computedWidth));
-    }
-
-    if (DEBUG && x !== 0) {
-      console.warn("getSingleLineLabelDimensions('".concat(text, "'): got non zero x offset: ").concat(x));
-    }
-
-    if (DEBUG && y !== 0) {
-      console.warn("getSingleLineLabelDimensions('".concat(text, "'): got non zero y offset: ").concat(y));
-    }
-  }
-
+  var transform = getTransform({
+    rotation: rotation,
+    xOffset: xOffset,
+    yOffset: yOffset
+  });
   parentContainer.select("#".concat(uniqueId)).remove();
   return {
     width: width,
-    height: height
+    height: height,
+    xOffset: xOffset,
+    yOffset: yOffset,
+    transform: transform
   };
 }
+
+var toRadians = function toRadians(degrees) {
+  return degrees * (Math.PI / 180);
+};
+
+var getOffsets = function getOffsets(_ref2) {
+  var orientation = _ref2.orientation,
+      width = _ref2.width,
+      height = _ref2.height,
+      fontSize = _ref2.fontSize;
+
+  switch (orientation) {
+    case HORIZONTAL:
+      return {
+        xOffset: 0,
+        yOffset: 0
+      };
+
+    case TOP_TO_BOTTOM:
+      return {
+        xOffset: width,
+        yOffset: 0
+      };
+
+    case BOTTOM_TO_TOP:
+      return {
+        xOffset: 0,
+        yOffset: height
+      };
+    // TODO Dont assume font size is height in SOUTH_EAST AND NORTH_EAST
+
+    case NORTH_EAST:
+      return {
+        xOffset: 0,
+        yOffset: height - Math.sin(toRadians(45)) * fontSize
+      };
+
+    case SOUTH_EAST:
+      return {
+        xOffset: Math.sin(toRadians(45)) * fontSize,
+        yOffset: 0
+      };
+
+    default:
+      throw new Error("Invalid orientation '".concat(orientation, "'"));
+  }
+};
+
+var getTransform = function getTransform(_ref3) {
+  var rotation = _ref3.rotation,
+      xOffset = _ref3.xOffset,
+      yOffset = _ref3.yOffset;
+  return rotation === 0 ? '' : "translate(".concat(xOffset, ",").concat(yOffset, "),rotate(").concat(rotation, ")");
+};
 
 module.exports = getSingleLineLabelDimensions;
