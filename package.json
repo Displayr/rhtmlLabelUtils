@@ -1,7 +1,7 @@
 {
   "name": "rhtmlLabelUtils",
   "private": "true",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "label utilities and shared label components for rhtml packages",
   "main": "dist/index.js",
   "scripts": {
