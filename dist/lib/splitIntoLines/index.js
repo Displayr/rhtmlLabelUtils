@@ -296,7 +296,7 @@ var _splitIntoLines = function _splitIntoLines() {
         _transform3 = _getDimensions5.transform;
 
     return [{
-      text: truncationString,
+      text: '',
       width: _width3,
       height: _height3,
       xOffset: _xOffset3,

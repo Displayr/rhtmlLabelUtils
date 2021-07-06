@@ -154,7 +154,7 @@ const _splitIntoLines = ({
 
   if (linesInfo.length === 0) {
     const { width, height, xOffset, yOffset, transform } = getDimensions(truncationString)
-    return [{ text: truncationString, width, height, xOffset, yOffset, transform }]
+    return [{ text: '', width, height, xOffset, yOffset, transform }]
   }
 
   return linesInfo
