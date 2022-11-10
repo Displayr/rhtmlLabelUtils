@@ -39,7 +39,7 @@
     "npm-watch": "^0.7.0",
     "puppeteer": "^5.5.0",
     "regenerator-runtime": "^0.13.7",
-    "serve": "^11.3.2"
+    "serve": "^14.1.1"
   },
   "dependencies": {},
   "watch": {
